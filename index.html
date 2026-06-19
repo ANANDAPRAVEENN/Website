@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="images/Logo.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Geoinformatics – GIS & Geospatial Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#1a5c3a;
+  --blue-light:#e8f5ee;
+  --blue-mid:#2d7a52;
+  --blue-dark:#0f3d26;
+  --text:#1a1a1a;
+  --muted:#5a6472;
+  --border:#e2e8e4;
+  --bg:#fafbfa;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* ========== SCROLL ANIMATIONS ========== */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(0.94);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+/* stagger delays for grids */
+.stagger-1{transition-delay:0.05s}
+.stagger-2{transition-delay:0.15s}
+.stagger-3{transition-delay:0.25s}
+.stagger-4{transition-delay:0.35s}
+.stagger-5{transition-delay:0.45s}
+.stagger-6{transition-delay:0.55s}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--border);padding:0 3rem;display:flex;align-items:center;justify-content:space-between;height:70px;transition:box-shadow 0.3s}
+nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,0.08)}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-wrap img{height:48px;width:auto;object-fit:contain}
+.logo-text-wrap .brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;color:var(--blue-dark);letter-spacing:0.01em}
+.logo-text-wrap .tagline{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:2.2rem}
+.nav-links a{font-size:13.5px;font-weight:400;color:var(--muted);transition:color 0.2s;letter-spacing:0.02em}
+.nav-links a:hover{color:var(--blue)}
+.nav-cta{background:var(--blue) !important;color:var(--white) !important;padding:9px 22px;border-radius:6px;font-weight:500 !important;font-size:13px !important;transition:background 0.2s !important}
+.nav-cta:hover{background:var(--blue-dark) !important}
+
+/* HERO */
+.hero{min-height:90vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;padding:5rem 3rem;gap:5rem;background:var(--white)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:1.3rem}
+.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--blue)}
+.hero h1{font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:400;line-height:1.15;letter-spacing:-0.02em;margin-bottom:1.4rem;color:var(--text)}
+.hero h1 em{color:var(--blue);font-style:italic}
+.hero p{font-size:15px;color:var(--muted);line-height:1.75;max-width:500px;margin-bottom:2.2rem}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{display:inline-block;background:var(--blue);color:var(--white);padding:12px 28px;border-radius:6px;font-size:13.5px;font-weight:500;letter-spacing:0.02em;transition:background 0.2s}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-outline{display:inline-block;border:1px solid var(--border);color:var(--text);padding:12px 28px;border-radius:6px;font-size:13.5px;font-weight:400;transition:all 0.2s}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.8rem;padding-top:2rem;border-top:1px solid var(--border)}
+.stat span{display:block;font-family:'Playfair Display',serif;font-size:2rem;color:var(--blue);font-weight:400}
+.stat small{font-size:12px;color:var(--muted);letter-spacing:0.04em;margin-top:2px;display:block}
+
+/* Hero map */
+.hero-visual{position:relative}
+.map-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;height:460px;overflow:hidden;position:relative}
+.map-card img{width:100%;height:100%;object-fit:cover;display:block}
+#client-map{width:100%;height:100%;border-radius:16px}
+.leaflet-popup-content-wrapper{border-radius:8px !important;box-shadow:0 4px 20px rgba(0,0,0,0.12) !important;border:1px solid #e2e8e4 !important}
+.leaflet-popup-content{font-family:'DM Sans',sans-serif !important;font-size:13px !important;color:#1a1a1a !important;margin:10px 14px !important}
+.leaflet-popup-content strong{color:#1a5c3a;display:block;font-size:13px;margin-bottom:2px}
+.leaflet-popup-content span{color:#5a6472;font-size:11px}
+.leaflet-popup-tip{background:#fff !important}
+.map-badge{position:absolute;bottom:16px;left:16px;background:var(--white);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:10.5px;color:var(--muted);letter-spacing:0.06em;font-family:monospace}
+.map-badge strong{color:var(--blue);font-family:'DM Sans',sans-serif;font-weight:500}
+.map-tag{position:absolute;top:16px;right:16px;background:var(--blue);color:var(--white);border-radius:5px;padding:5px 10px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
+
+/* SECTION BASE */
+section{padding:5.5rem 3rem}
+.sec-label{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:0.7rem;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';width:16px;height:1px;background:var(--blue)}
+.sec-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:400;line-height:1.2;letter-spacing:-0.01em;margin-bottom:0.7rem}
+.sec-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:540px}
+
+/* SERVICES */
+.services-bg{background:var(--bg)}
+.services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.svc-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.8rem;transition:border-color 0.25s,transform 0.25s,box-shadow 0.25s}
+.svc-card:hover{border-color:var(--blue-mid);transform:translateY(-4px);box-shadow:0 8px 30px rgba(26,92,58,0.1)}
+.svc-card h3{font-size:15px;font-weight:500;margin-bottom:0.5rem;color:var(--text)}
+.svc-card p{font-size:13px;color:var(--muted);line-height:1.65}
+.svc-list{margin-top:0.9rem;display:flex;flex-direction:column;gap:4px}
+.svc-list li{font-size:12px;color:var(--muted);list-style:none;display:flex;align-items:center;gap:6px}
+.svc-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue);flex-shrink:0}
+
+/* INDUSTRIES */
+.industries-section{background:#ffffff}
+.industries-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.ind-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.25s,transform 0.25s,box-shadow 0.25s;background:rgba(255,255,255,0.75)}
+.ind-card:hover{border-color:var(--blue-mid);transform:translateY(-4px);box-shadow:0 8px 30px rgba(26,92,58,0.1)}
+.ind-thumb{height:250px;overflow:hidden;position:relative}
+.ind-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.ind-card:hover .ind-thumb img{transform:scale(1.07)}
+.ind-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(26,92,58,0) 40%,rgba(26,92,58,0.55) 100%)}
+.ind-num{position:absolute;bottom:8px;left:12px;font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;font-weight:400;line-height:1;opacity:0.85}
+.ind-body{padding:1rem 1.1rem}
+.ind-card h3{font-size:14px;font-weight:500;margin-bottom:4px}
+.ind-card p{font-size:12.5px;color:var(--muted);line-height:1.55}
+
+/* PROJECTS */
+.projects-bg{background:var(--bg)}
+.projects-filter{display:flex;gap:8px;margin-bottom:2.5rem;flex-wrap:wrap}
+.filter-btn{font-size:12px;padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.filter-btn.active,.filter-btn:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.proj-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.25s,transform 0.25s,box-shadow 0.25s}
+.proj-card:hover{border-color:var(--blue-mid);transform:translateY(-4px);box-shadow:0 8px 30px rgba(26,92,58,0.1)}
+.proj-thumb{height:250px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.proj-card:hover .proj-thumb img{transform:scale(1.05)}
+.proj-area{position:absolute;top:10px;right:10px;background:var(--white);border:1px solid var(--border);border-radius:4px;font-size:10px;padding:3px 8px;color:var(--muted);letter-spacing:0.05em}
+.proj-body{padding:1.1rem}
+.proj-tag{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:5px}
+.proj-title{font-size:13.5px;font-weight:500;margin-bottom:5px;line-height:1.3}
+.proj-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.proj-pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.proj-pill{font-size:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:2px 7px;color:var(--muted)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:center}
+.about-img-wrap{position:relative}
+.about-globe{background:var(--bg);border:1px solid var(--border);border-radius:16px;height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.about-accent-bar{position:absolute;top:0;left:0;right:0;height:4px;background:var(--blue);border-radius:16px 16px 0 0}
+.about-card{position:absolute;bottom:-20px;right:-20px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;box-shadow:0 4px 20px rgba(0,0,0,0.07)}
+.about-card-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--blue);font-weight:400}
+.about-card-label{font-size:11px;color:var(--muted);margin-top:2px}
+.about-text p{font-size:14.5px;color:var(--muted);line-height:1.8;margin-top:1rem}
+.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:2rem}
+.hl-item{display:flex;gap:10px;align-items:flex-start}
+.hl-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);margin-top:5px;flex-shrink:0}
+.hl-item p{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* CONTACT */
+.contact-bg{background:var(--bg)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:5rem;align-items:start}
+.contact-info{padding-top:0.5rem}
+.c-item{display:flex;gap:14px;margin-bottom:1.8rem;align-items:flex-start}
+.c-icon{width:36px;height:36px;border-radius:8px;background:var(--blue-light);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.c-label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px}
+.c-val{font-size:14px;color:var(--text);line-height:1.5}
+.hours-wrap{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-top:1.5rem}
+.hours-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--border)}
+.hours-row:last-child{border-bottom:none}
+.hours-row span:first-child{color:var(--muted)}
+.hours-row span:last-child{font-weight:500;color:var(--blue)}
+.form-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:2rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;letter-spacing:0.03em}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue)}
+.form-group textarea{resize:vertical;min-height:100px}
+.submit-btn{width:100%;background:var(--blue);color:var(--white);border:none;padding:12px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background 0.2s;margin-top:0.3rem}
+.submit-btn:hover{background:var(--blue-dark)}
+
+/* FOOTER */
+footer{background:var(--blue-dark);color:var(--white);padding:3rem 3rem 2rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+.footer-brand p{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;margin-top:0.8rem}
+.footer-col h4{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;margin-bottom:1rem;color:rgba(255,255,255,0.5)}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;transition:color 0.2s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,0.4)}
+
+.svc-img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:1rem;display:block}
+.about-globe img{width:100%;height:100%;object-fit:cover;border-radius:16px}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+[id]{scroll-margin-top:80px}
+
+/* Counter animation */
+.count-num{display:inline-block}
+
+@media(max-width:900px){
+  .hero,.about-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem}
+  .services-grid,.industries-grid,.projects-grid{grid-template-columns:1fr 1fr}
+  nav .nav-links{display:none}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .about-card{right:0;bottom:-10px}
+}
+@media(max-width:600px){
+  .services-grid,.industries-grid,.projects-grid,.footer-grid{grid-template-columns:1fr}
+  section{padding:3.5rem 1.5rem}
+  nav{padding:0 1.5rem}
+  .hero{padding:3rem 1.5rem;min-height:auto}
+  .hero h1{font-size:2.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="logo-wrap">
+    <img src="images/Logo.png" alt="Geoinformatics Logo"/>
+    <div class="logo-text-wrap">
+      <div class="brand">Geoinformatics</div>
+      <div class="tagline">Geospatial Solutions</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#industries">Industries</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-cta">Contact Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div>
+    <div class="hero-eyebrow reveal">Geospatial Excellence Since 2015</div>
+    <h1 class="reveal" style="transition-delay:0.1s">Precision mapping<br>for a <em>connected</em><br>world</h1>
+    <p class="reveal" style="transition-delay:0.2s">Geoinformatics is a multidisciplinary geospatial services company offering LiDAR processing, GIS, photogrammetry, and spatial data solutions to clients across the globe.</p>
+    <div class="hero-btns reveal" style="transition-delay:0.3s">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#projects" class="btn-outline">View Projects</a>
+    </div>
+    <div class="hero-stats reveal" style="transition-delay:0.4s">
+      <div class="stat"><span class="count-num" data-target="200">0</span><small>Projects Completed</small></div>
+      <div class="stat"><span class="count-num" data-target="10">0</span><small>Countries Served</small></div>
+      <div class="stat"><span class="count-num" data-target="10">0</span><small>Years of Expertise</small></div>
+    </div>
+  </div>
+  <div class="hero-visual reveal-right" style="transition-delay:0.2s">
+    <div class="map-card">
+      <div id="client-map"></div>
+      <div class="map-badge"><strong>11 Client Locations</strong> &nbsp;· Worldwide</div>
+      <div class="map-tag">Our Clients</div>
+    </div>
+  </div>
+</section>
+
+<!-- COVER BANNER -->
+<div class="reveal" style="position:relative;height:320px;overflow:hidden;background:#000">
+  <img src="images/Cover.jpg" alt="Geoinformatics operations" style="width:100%;height:100%;object-fit:cover;opacity:0.55;display:block"/>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem">
+    <p style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:0.8rem;font-family:'DM Sans',sans-serif">Trusted by clients across 25+ countries</p>
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:400;color:#fff;max-width:680px;line-height:1.25">From raw point cloud to analysis-ready geospatial products</h2>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="services-bg">
+  <div class="services-header">
+    <div class="reveal">
+      <div class="sec-label">What we do</div>
+      <h2 class="sec-title">End-to-End Geospatial Services</h2>
+      <p class="sec-sub">From raw point cloud to analysis-ready products — we deliver precision at every stage of the geospatial workflow.</p>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card reveal stagger-1">
+      <img src="images/Lidar classification.png" alt="LiDAR Classification" class="svc-img"/>
+      <h3>LiDAR Processing</h3>
+      <p>Comprehensive LiDAR point cloud processing from strip adjustment through to final classified deliverables.</p>
+      <ul class="svc-list">
+        <li>Strip adjustment & photo calibration</li>
+        <li>Bare earth & building classification</li>
+        <li>Powerline & hydro classification</li>
+        <li>Hydro-flattened DTM/DSM creation</li>
+        <li>Flood modelling & forest inventory</li>
+      </ul>
+    </div>
+    <div class="svc-card reveal stagger-2">
+      <img src="images/Photogrametry.jpg" alt="Photogrammetry" class="svc-img"/>
+      <h3>Photogrammetry</h3>
+      <p>Precision aerial triangulation, 3D city modelling, and ortho-photo production for mapping applications.</p>
+      <ul class="svc-list">
+        <li>Aerial triangulation</li>
+        <li>3D city modelling</li>
+        <li>DEM/DTM generation</li>
+        <li>Planimetric feature extraction</li>
+        <li>Contour generation</li>
+      </ul>
+    </div>
+    <div class="svc-card reveal stagger-3">
+      <img src="images/Guid Map.png" alt="GIS Mapping" class="svc-img"/>
+      <h3>GIS Services</h3>
+      <p>Topographic, cadastral, and thematic mapping with geospatial database design and GPS survey.</p>
+      <ul class="svc-list">
+        <li>Topographic & cadastral maps</li>
+        <li>Thematic map generation</li>
+        <li>GPS survey</li>
+        <li>Oil & gas pipeline GIS databases</li>
+      </ul>
+    </div>
+    <div class="svc-card reveal stagger-4">
+      <img src="images/Ortho.png" alt="Orthophoto" class="svc-img"/>
+      <h3>Orthophoto Production</h3>
+      <p>High-quality ortho generation, mosaicing, colour balancing, seamline editing and tile cutting services.</p>
+      <ul class="svc-list">
+        <li>Ortho generation & mosaicing</li>
+        <li>Colour balancing</li>
+        <li>Seamline editing</li>
+        <li>Tile cutting & edge matching</li>
+      </ul>
+    </div>
+    <div class="svc-card reveal stagger-5">
+      <img src="images/Simple Pole_1.png" alt="Laser Scanning" class="svc-img"/>
+      <h3>Laser Scanning</h3>
+      <p>3D modelling, BIM/MEP, reverse engineering and surface texturing using terrestrial and mobile laser scanning.</p>
+      <ul class="svc-list">
+        <li>3D modelling (AutoCAD, Revit)</li>
+        <li>BIM/MEP documentation</li>
+        <li>Reverse engineering</li>
+        <li>Surface texturing</li>
+      </ul>
+    </div>
+    <div class="svc-card reveal stagger-6">
+      <img src="images/DTM.png" alt="DTM Engineering" class="svc-img"/>
+      <h3>Engineering & CAD</h3>
+      <p>Engineering drawing conversion, drafting bureau services, and raster-to-digital data conversion across Civil, Structural, MEP and Architecture verticals.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries" class="industries-section" style="padding:5.5rem 3rem">
+  <div class="reveal">
+    <div class="sec-label">Who we serve</div>
+    <h2 class="sec-title">Industries We Specialize In</h2>
+    <p class="sec-sub">Our vertical focus spans the sectors that rely most on accurate spatial intelligence to make critical decisions.</p>
+  </div>
+  <div class="industries-grid">
+    <div class="ind-card reveal stagger-1">
+      <div class="ind-thumb" style="position:relative">
+        <img src="images/Guid Map.png" alt="Land Information Systems"/>
+        <div class="ind-thumb-overlay"></div>
+        <div class="ind-num">01</div>
+      </div>
+      <div class="ind-body">
+        <h3>Land Information Systems</h3>
+        <p>GIS solutions for cadastral and land-use mapping for state governments, municipalities and urban planning institutions.</p>
+      </div>
+    </div>
+    <div class="ind-card reveal stagger-2">
+      <div class="ind-thumb" style="position:relative">
+        <img src="images/pylon_2014412b.jpg" alt="Utility"/>
+        <div class="ind-thumb-overlay"></div>
+        <div class="ind-num">02</div>
+      </div>
+      <div class="ind-body">
+        <h3>Utility</h3>
+        <p>Spatial and non-spatial data management for electric, gas, water and telecom utilities — geodatabases with asset and facility data.</p>
+      </div>
+    </div>
+    <div class="ind-card reveal stagger-3">
+      <div class="ind-thumb" style="position:relative">
+        <img src="images/PowerLine_03.jpg" alt="Oil and Gas"/>
+        <div class="ind-thumb-overlay"></div>
+        <div class="ind-num">03</div>
+      </div>
+      <div class="ind-body">
+        <h3>Oil &amp; Gas</h3>
+        <p>Pipeline corridor mapping, facility management GIS, and geospatial integration for energy infrastructure projects.</p>
+      </div>
+    </div>
+    <div class="ind-card reveal stagger-4">
+      <div class="ind-thumb" style="position:relative">
+        <img src="images/Mine.jpg" alt="Geology and Mining"/>
+        <div class="ind-thumb-overlay"></div>
+        <div class="ind-num">04</div>
+      </div>
+      <div class="ind-body">
+        <h3>Geology &amp; Mining</h3>
+        <p>Surface/sub-surface mineral mapping, drill log digitization, geological geo-databases, and mine-site terrain mapping.</p>
+      </div>
+    </div>
+    <div class="ind-card reveal stagger-5">
+      <div class="ind-thumb" style="position:relative">
+        <img src="images/DTM.png" alt="Transportation and Navigation"/>
+        <div class="ind-thumb-overlay"></div>
+        <div class="ind-num">05</div>
+      </div>
+      <div class="ind-body">
+        <h3>Transportation &amp; Navigation</h3>
+        <p>GIS-based navigation content creation, network mapping, and flawless geodata content services for the navigation industry.</p>
+      </div>
+    </div>
+    <div class="ind-card reveal stagger-6">
+      <div class="ind-thumb" style="position:relative">
+        <img src="images/logging-operation.jpg" alt="Forestry"/>
+        <div class="ind-thumb-overlay"></div>
+        <div class="ind-num">06</div>
+      </div>
+      <div class="ind-body">
+        <h3>Forestry</h3>
+        <p>Forest inventory data collection using LiDAR, vegetation analysis, fire mitigation mapping and fallen log measurement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects-bg">
+  <div class="reveal">
+    <div class="sec-label">Our work</div>
+    <h2 class="sec-title">Featured Projects</h2>
+    <p class="sec-sub">Delivering accurate geospatial solutions across Australia, North America, Brazil and beyond.</p>
+  </div>
+  <div class="projects-filter reveal" style="transition-delay:0.1s">
+    <button class="filter-btn active" onclick="filterProjects('all',this)">All Projects</button>
+    <button class="filter-btn" onclick="filterProjects('lidar',this)">LiDAR</button>
+    <button class="filter-btn" onclick="filterProjects('mining',this)">Mining &amp; Resources</button>
+    <button class="filter-btn" onclick="filterProjects('urban',this)">Urban &amp; Infrastructure</button>
+    <button class="filter-btn" onclick="filterProjects('environment',this)">Environment</button>
+    <button class="filter-btn" onclick="filterProjects('photogrammetry',this)">Photogrammetry</button>
+  </div>
+  <div class="projects-grid" id="proj-grid">
+    <div class="proj-card reveal stagger-1" data-cat="lidar urban">
+      <div class="proj-thumb"><img src="images/AT (1).png" alt="Civil Agriculture"/><div class="proj-area">640 SqKm</div></div>
+      <div class="proj-body"><div class="proj-tag">Civil Agriculture</div><div class="proj-title">Civil Agriculture Design</div><p class="proj-desc">Automated ground classification and hydro feature / atmospheric noise classification.</p><div class="proj-pills"><span class="proj-pill">Ground Classification</span><span class="proj-pill">Hydro Features</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-2" data-cat="lidar environment">
+      <div class="proj-thumb"><img src="images/AT.png" alt="Flinders River"/><div class="proj-area">1,400 SqKm</div></div>
+      <div class="proj-body"><div class="proj-tag">Flood Management</div><div class="proj-title">Flinders River — Flood Management</div><p class="proj-desc">Ground, hydro, building and artifacts classification for large-scale flood risk assessment.</p><div class="proj-pills"><span class="proj-pill">Building Classification</span><span class="proj-pill">Flood Modelling</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-3" data-cat="lidar urban">
+      <div class="proj-thumb"><img src="images/Lidar classifcation_Ashland.png" alt="Sunshine Coast"/><div class="proj-area">600 SqKm</div></div>
+      <div class="proj-body"><div class="proj-tag">Urban LiDAR</div><div class="proj-title">Sunshine Coast</div><p class="proj-desc">Full classification suite plus 3D breakline digitization across Queensland coastal corridor.</p><div class="proj-pills"><span class="proj-pill">3D Breaklines</span><span class="proj-pill">DTM/DSM</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-4" data-cat="lidar urban">
+      <div class="proj-thumb"><img src="images/Powerline classification.png" alt="Powerline"/><div class="proj-area">495 Km</div></div>
+      <div class="proj-body"><div class="proj-tag">Powerline</div><div class="proj-title">CNC Transmission — Powerline Danger Detection</div><p class="proj-desc">Powerline classification and danger object detection for transmission corridor safety.</p><div class="proj-pills"><span class="proj-pill">Powerline Classification</span><span class="proj-pill">Safety Assessment</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-5" data-cat="lidar urban">
+      <div class="proj-thumb"><img src="images/PowerLine_03.jpg" alt="Victoria DTV"/><div class="proj-area">2,240 SqKm</div></div>
+      <div class="proj-body"><div class="proj-tag">State-wide LiDAR</div><div class="proj-title">Victoria DTV</div><p class="proj-desc">Largest project in portfolio — full classification suite for Victorian digital terrain model.</p><div class="proj-pills"><span class="proj-pill">Ground</span><span class="proj-pill">Building</span><span class="proj-pill">Artifacts</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-6" data-cat="mining">
+      <div class="proj-thumb"><img src="images/Mine.jpg" alt="Super Pit"/><div class="proj-area">128 SqKm</div></div>
+      <div class="proj-body"><div class="proj-tag">Mining</div><div class="proj-title">Super Pit</div><p class="proj-desc">Ground classification, hydro feature and atmospheric noise processing for open-cut mine site.</p><div class="proj-pills"><span class="proj-pill">Mine Mapping</span><span class="proj-pill">Ground Classification</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-1" data-cat="environment lidar">
+      <div class="proj-thumb"><img src="images/logging-operation.jpg" alt="Forest Fire"/><div class="proj-area">200 Acres</div></div>
+      <div class="proj-body"><div class="proj-tag">Forest Analysis</div><div class="proj-title">Forest Fire Analysis</div><p class="proj-desc">LiDAR classification of ground and vegetation; vector capture of fallen woody logs with length and diameter measurement.</p><div class="proj-pills"><span class="proj-pill">Vegetation</span><span class="proj-pill">Log Measurement</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-2" data-cat="photogrammetry">
+      <div class="proj-thumb"><img src="images/pylon_2014412b.jpg" alt="Canal Alagoano"/><div class="proj-area">52 SqKm</div></div>
+      <div class="proj-body"><div class="proj-tag">Drone / UAV</div><div class="proj-title">Canal Alagoano — Ortho Mosaic &amp; DTM</div><p class="proj-desc">Ortho mosaic and DTM creation from 13,000 drone images over a Brazilian canal corridor.</p><div class="proj-pills"><span class="proj-pill">13,000 Images</span><span class="proj-pill">UAV</span><span class="proj-pill">DTM</span></div></div>
+    </div>
+    <div class="proj-card reveal stagger-3" data-cat="urban lidar">
+      <div class="proj-thumb"><img src="images/Lidar classifcation_Ashland.png" alt="City of Ashland"/><div class="proj-area">4,300 Acres</div></div>
+      <div class="proj-body"><div class="proj-tag">Urban UAV</div><div class="proj-title">City of Ashland</div><p class="proj-desc">UAV LiDAR classification at 600 ppm density — ground, vegetation, building, powerline and artifacts.</p><div class="proj-pills"><span class="proj-pill">600 ppm</span><span class="proj-pill">UAV LiDAR</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO BANNER -->
+<div class="reveal" style="position:relative;background:#0f3d26;overflow:hidden">
+
+<video id="showcase-video"
+  style="width:100%;display:block;max-height:520px;object-fit:cover;cursor:pointer"
+  poster="https://geoinformatics.blob.core.windows.net/$web/geoinformatics/images/Cover.jpg"
+  preload="metadata"
+  muted
+  playsinline
+  onclick="toggleVideo(this)">
+  
+  <source src="https://geoinformatics.blob.core.windows.net/$web/geoinformatics/Videos/lidar.mp4" type="video/mp4"/>
+  
+</video>
+
+  <div id="play-overlay"
+    onclick="toggleVideo(document.getElementById('showcase-video'))"
+    style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.35);transition:background 0.3s">
+    <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.15);border:2.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;transition:transform 0.2s,background 0.2s"
+      onmouseover="this.style.background='rgba(255,255,255,0.25)';this.style.transform='scale(1.08)'"
+      onmouseout="this.style.background='rgba(255,255,255,0.15)';this.style.transform='scale(1)'">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white" style="margin-left:4px"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <p style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:400;color:#fff;margin-bottom:0.5rem;text-align:center">See How We Work</p>
+    <p style="font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);letter-spacing:0.08em;text-transform:uppercase">Click to play</p>
+  </div>
+  <button id="mute-btn" onclick="toggleMute()" style="display:none;position:absolute;bottom:16px;right:16px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:7px 14px;color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;letter-spacing:0.05em">🔇 Unmute</button>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap reveal-left">
+      <div class="about-globe" style="padding:0;border-radius:16px;overflow:hidden">
+        <div class="about-accent-bar"></div>
+        <img src="images/200.png" alt="Geoinformatics field operations" style="width:100%;height:100%;object-fit:cover;display:block"/>
+      </div>
+      <div class="about-card">
+        <div class="about-card-num">200+</div>
+        <div class="about-card-label">Global Projects</div>
+      </div>
+    </div>
+    <div class="about-text reveal-right">
+      <div class="sec-label">About us</div>
+      <h2 class="sec-title">Pioneers in<br>Spatial Intelligence</h2>
+      <p>Geoinformatics is a multidisciplinary professional geospatial technology services company with innovative offerings and strategic partnerships with industry leaders in the global space. Innovation is the guiding force for all our services.</p>
+      <p>We offer services ranging from application development to enterprise integration, consulting, data conversion and capture — including field survey and enterprise system integration projects undertaken with our strategic partners.</p>
+      <p>Geoinformatics follows a standard methodology for issue escalation, progress monitoring, quality reviews and status reporting. Tasks are planned with mutually agreed milestones, broken down into weekly work segments with regular tele-conference review meetings.</p>
+      <div class="about-highlights">
+        <div class="hl-item"><div class="hl-dot"></div><p>Standardized business practices coupled with software engineering processes</p></div>
+        <div class="hl-item"><div class="hl-dot"></div><p>Proven delivery for large private and government organizations</p></div>
+        <div class="hl-item"><div class="hl-dot"></div><p>Strategic global partnerships across the geospatial industry</p></div>
+        <div class="hl-item"><div class="hl-dot"></div><p>SME-led quality assurance at every project stage</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-bg">
+  <div class="contact-grid">
+    <div class="contact-info reveal-left">
+      <div class="sec-label">Get in touch</div>
+      <h2 class="sec-title">Let's Work Together</h2>
+      <p style="font-size:14.5px;color:#5a6472;line-height:1.7;margin-top:0.8rem;margin-bottom:2rem">Have a project in mind? Tell us about it and we'll get back to you promptly.</p>
+      <div class="c-item">
+        <div class="c-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="#1a5c3a" stroke-width="1.2" fill="none"/><circle cx="8" cy="6" r="1.5" fill="#1a5c3a"/></svg></div>
+        <div><div class="c-label">Address</div><div class="c-val">10, East Coast Road, VGP Layout<br>Palavakkam<br>Chennai, Tamil Nadu 600041, India</div></div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#1a5c3a" stroke-width="1.2" fill="none"/><path d="M2 5.5 L8 9.5 L14 5.5" stroke="#1a5c3a" stroke-width="1"/></svg></div>
+        <div><div class="c-label">Email</div><div class="c-val">info@geoinformatics.co.in</div></div>
+      </div>
+      <div class="hours-wrap">
+        <div style="font-size:12px;font-weight:500;margin-bottom:0.7rem;color:#1a5c3a;text-transform:uppercase;letter-spacing:0.08em">Business Hours</div>
+        <div class="hours-row"><span>Monday – Saturday</span><span>9:00 am – 6:00 pm</span></div>
+        <div class="hours-row"><span>Sunday</span><span style="color:#5a6472;font-weight:400">Closed</span></div>
+      </div>
+    </div>
+    <div class="form-wrap reveal-right">
+      <div class="form-grid">
+        <div class="form-group"><label>First name</label><input type="text" placeholder="Arjun"/></div>
+        <div class="form-group"><label>Last name</label><input type="text" placeholder="Sharma"/></div>
+      </div>
+      <div class="form-group"><label>Email address</label><input type="email" placeholder="you@company.com"/></div>
+      <div class="form-group"><label>Phone number</label><input type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+      <div class="form-group"><label>Service of interest</label>
+        <select>
+          <option>Select a service...</option>
+          <option>LiDAR Processing</option>
+          <option>Photogrammetry</option>
+          <option>GIS Services</option>
+          <option>Orthophoto Production</option>
+          <option>Laser Scanning</option>
+          <option>Engineering &amp; CAD</option>
+          <option>Other / General Enquiry</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Describe your project or enquiry..."></textarea></div>
+      <button class="submit-btn" onclick="this.textContent='Message Sent!';this.style.background='#0f3d26'">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid reveal">
+    <div class="footer-brand">
+      <div class="logo-wrap" style="margin-bottom:0.8rem">
+        <img src="images/Logo.png" alt="Logo" style="height:40px"/>
+        <div class="logo-text-wrap">
+          <div class="brand" style="color:white">Geoinformatics</div>
+          <div class="tagline" style="color:rgba(255,255,255,0.45)">Geospatial Solutions</div>
+        </div>
+      </div>
+      <p>A multidisciplinary geospatial technology services company with strategic global partnerships, delivering precision spatial intelligence across industries worldwide.</p>
+      <div style="margin-top:1.2rem">
+        <a href="https://www.linkedin.com/company/geoinformatics-pvt-ltd" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:7px;padding:8px 14px;text-decoration:none;transition:background 0.2s"
+           onmouseover="this.style.background='rgba(255,255,255,0.15)'"
+           onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+          <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path d="M7.5 9.5H5V19H7.5V9.5ZM6.25 8.5C7.08 8.5 7.75 7.83 7.75 7S7.08 5.5 6.25 5.5 4.75 6.17 4.75 7 5.42 8.5 6.25 8.5ZM19 19H16.5V14.25C16.5 13.01 15.74 12.5 14.88 12.5C13.97 12.5 13.5 13.17 13.5 14.25V19H11V9.5H13.4V10.6C13.84 9.93 14.67 9.25 15.88 9.25C17.8 9.25 19 10.55 19 12.75V19Z" fill="white"/></svg>
+          <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.85);font-weight:500">Follow us on LinkedIn</span>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#services">LiDAR Processing</a>
+      <a href="#services">Photogrammetry</a>
+      <a href="#services">GIS Services</a>
+      <a href="#services">Orthophoto Production</a>
+      <a href="#services">Laser Scanning</a>
+    </div>
+    <div class="footer-col">
+      <h4>Industries</h4>
+      <a href="#industries">Land Information Systems</a>
+      <a href="#industries">Utility</a>
+      <a href="#industries">Oil &amp; Gas</a>
+      <a href="#industries">Mining</a>
+      <a href="#industries">Forestry</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#about">About Us</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Copyright &copy; 2026 Geoinformatics Pvt Ltd — All Rights Reserved.</p>
+    <div style="display:flex;align-items:center;gap:1.2rem">
+      <p>10 East Coast Road, Palavakkam, Chennai 600041</p>
+      <a href="https://www.linkedin.com/company/geoinformatics-pvt-ltd" target="_blank" rel="noopener"
+         title="Geoinformatics on LinkedIn"
+         style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);transition:background 0.2s"
+         onmouseover="this.style.background='#0A66C2';this.style.borderColor='#0A66C2'"
+         onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='rgba(255,255,255,0.15)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path d="M7.5 9.5H5V19H7.5V9.5ZM6.25 8.5C7.08 8.5 7.75 7.83 7.75 7S7.08 5.5 6.25 5.5 4.75 6.17 4.75 7 5.42 8.5 6.25 8.5ZM19 19H16.5V14.25C16.5 13.01 15.74 12.5 14.88 12.5C13.97 12.5 13.5 13.17 13.5 14.25V19H11V9.5H13.4V10.6C13.84 9.93 14.67 9.25 15.88 9.25C17.8 9.25 19 10.55 19 12.75V19Z" fill="white"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ========== SCROLL REVEAL ==========
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(function(el) {
+  observer.observe(el);
+});
+
+// ========== NAV SHADOW ON SCROLL ==========
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('main-nav');
+  if (window.scrollY > 20) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// ========== COUNTER ANIMATION ==========
+function animateCounter(el, target) {
+  var start = 0;
+  var duration = 1800;
+  var step = Math.ceil(target / (duration / 16));
+  var timer = setInterval(function() {
+    start += step;
+    if (start >= target) {
+      start = target;
+      clearInterval(timer);
+    }
+    el.textContent = start + '+';
+  }, 16);
+}
+
+var counterObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var el = entry.target;
+      var target = parseInt(el.getAttribute('data-target'));
+      animateCounter(el, target);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.count-num').forEach(function(el) {
+  counterObserver.observe(el);
+});
+
+// ========== PROJECT FILTER ==========
+function filterProjects(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.proj-card').forEach(function(card) {
+    if (cat === 'all' || card.dataset.cat.includes(cat)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// ========== VIDEO ==========
+function toggleVideo(vid) {
+  var overlay = document.getElementById('play-overlay');
+  var muteBtn = document.getElementById('mute-btn');
+  if (vid.paused) {
+    vid.play();
+    overlay.style.display = 'none';
+    muteBtn.style.display = 'block';
+  } else {
+    vid.pause();
+    overlay.style.display = 'flex';
+    muteBtn.style.display = 'none';
+  }
+}
+function toggleMute() {
+  var vid = document.getElementById('showcase-video');
+  var btn = document.getElementById('mute-btn');
+  vid.muted = !vid.muted;
+  btn.textContent = vid.muted ? '🔇 Unmute' : '🔊 Mute';
+}
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var map = L.map('client-map', {
+  center: [20, 15], zoom: 2, zoomControl: true,
+  scrollWheelZoom: false, attributionControl: false,
+  worldCopyJump: false, maxBoundsViscosity: 1.0
+});
+map.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180)));
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  maxZoom:10, minZoom:2, noWrap:true
+}).addTo(map);
+
+var titleControl = L.control({position:'topright'});
+titleControl.onAdd = function() {
+  var div = L.DomUtil.create('div');
+  div.innerHTML = '<div style="background:rgba(255,255,255,0.92);border:1px solid #e2e8e4;border-radius:7px;padding:7px 13px;font-family:DM Sans,sans-serif;font-size:12px;font-weight:500;color:#1a5c3a;letter-spacing:0.06em;text-transform:uppercase">Our Clients Worldwide</div>';
+  return div;
+};
+titleControl.addTo(map);
+
+var countControl = L.control({position:'bottomright'});
+countControl.onAdd = function() {
+  var div = L.DomUtil.create('div');
+  div.innerHTML = '<div style="background:rgba(26,92,58,0.9);border-radius:7px;padding:6px 12px;font-family:DM Sans,sans-serif;font-size:11px;color:#fff;letter-spacing:0.05em">11 locations · 6 continents</div>';
+  return div;
+};
+countControl.addTo(map);
+
+function makeIcon(isHQ) {
+  return L.divIcon({
+    className:'',
+    html:'<div style="width:'+(isHQ?16:12)+'px;height:'+(isHQ?16:12)+'px;background:'+(isHQ?'#0f3d26':'#1a5c3a')+';border-radius:50%;border:2.5px solid #fff;box-shadow:0 0 0 3px rgba(26,92,58,'+(isHQ?'0.35':'0.2')+')"></div>',
+    iconSize:[isHQ?16:12,isHQ?16:12],
+    iconAnchor:[isHQ?8:6,isHQ?8:6],
+    popupAnchor:[0,-10]
+  });
+}
+
+var clients = [
+  [-26.65,153.06,'Sunshine Coast','Australia','LiDAR Classification · 600 SqKm'],
+  [-33.87,151.21,'Sydney','Australia','Western Sydney Corridor · 64 SqKm'],
+  [-31.95,115.86,'Perth','Australia','City of Karratha & Newman Sites'],
+  [44.05,-123.09,'Oregon','USA','Calistoga Fire Mitigation · 100 Acres'],
+  [41.85,-87.65,'Chicago','USA','Forest Fire Analysis · 200 Acres'],
+  [49.25,-123.10,'Vancouver','Canada','Keltic Lodge · High Density LiDAR'],
+  [50.85,4.35,'Belgium','Europe','European Geospatial Project'],
+  [-15.78,-47.93,'Brazil','South America','Canal Alagoano · 13,000 UAV Images'],
+  [13.08,80.27,'Chennai','India','Geoinformatics HQ · All Services'],
+  [51.51,-0.13,'London','UK','UK Geospatial Services'],
+  [43.30,5.38,'Marseille','France','European Mapping Project']
+];
+
+clients.forEach(function(c) {
+  var isHQ = c[2]==='Chennai';
+  L.marker([c[0],c[1]],{icon:makeIcon(isHQ)}).addTo(map)
+   .bindPopup('<strong>'+c[2]+(isHQ?' ★ HQ':'')+'</strong><span>'+c[3]+'</span><span style="display:block;margin-top:4px;color:#1a5c3a;font-size:11px">'+c[4]+'</span>');
+});
+
+map.fitBounds(clients.map(function(c){return[c[0],c[1]];}),{padding:[40,40],maxZoom:4});
+</script>
+</body>
+</html>
