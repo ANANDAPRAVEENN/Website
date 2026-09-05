@@ -732,6 +732,7 @@ var map = L.map('client-map', {
 map.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180)));
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom:10, minZoom:2, noWrap:true
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
 var titleControl = L.control({position:'topright'});
