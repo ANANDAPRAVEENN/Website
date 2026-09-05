@@ -730,7 +730,7 @@ var map = L.map('client-map', {
   worldCopyJump: false, maxBoundsViscosity: 1.0
 });
 map.setMaxBounds(L.latLngBounds(L.latLng(-85,-180), L.latLng(85,180)));
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom:10, minZoom:2, noWrap:true
 }).addTo(map);
 
