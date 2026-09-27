@@ -303,6 +303,52 @@ button,input,select,textarea{font:inherit}
   background:#f7faf8;border:1px solid var(--border);font-size:12.5px;color:var(--muted)
 }
 .note-box strong{color:var(--ink)}
+
+.more-projects-wrap{margin-top:54px}
+.more-projects-head{
+  display:flex;justify-content:space-between;align-items:end;gap:24px;
+  margin-bottom:24px
+}
+.more-projects-head h3{
+  font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:500;letter-spacing:-.02em
+}
+.more-projects-head p{font-size:13px;color:var(--muted);max-width:760px;margin-top:6px}
+.more-projects-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px
+}
+.mini-project{
+  background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;
+  transition:.25s ease;box-shadow:0 0 0 rgba(0,0,0,0)
+}
+.mini-project:hover{transform:translateY(-4px);box-shadow:var(--shadow-soft);border-color:rgba(31,122,80,.22)}
+.mini-project .topline{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px
+}
+.mini-project .ptype{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--forest-2);font-weight:700
+}
+.mini-project .code{
+  font-size:10px;padding:5px 9px;border-radius:999px;
+  background:var(--cream);border:1px solid var(--border);color:var(--muted)
+}
+.mini-project h4{font-size:16px;line-height:1.35;margin-bottom:8px}
+.mini-project p{font-size:12.5px;color:var(--muted);line-height:1.6}
+.spec-row{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:14px
+}
+.spec{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+  background:#f7faf8;border:1px solid var(--border);font-size:11px;color:var(--ink)
+}
+.spec b{font-weight:700;color:var(--forest)}
+@media(max-width:980px){
+  .more-projects-grid{grid-template-columns:repeat(2,1fr)}
+  .more-projects-head{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:640px){
+  .more-projects-grid{grid-template-columns:1fr}
+}
 @media(max-width:980px){
   .project-meta{grid-template-columns:1fr}
   .directory-head{flex-direction:column;align-items:flex-start}
@@ -587,11 +633,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Civil Agriculture Design</h3>
       <p>Automated ground classification and hydro feature / atmospheric noise classification.</p>
       <div class="mini-list"><span>Ground</span><span>Hydro</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-567</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Timeline</small><span>17-Mar-2024 to 25-Apr-2024</span></div>
+        <div class="meta-box"><small>Area</small><span>640</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
       </div>
     </div>
   </article>
@@ -603,11 +650,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Flinders River</h3>
       <p>Ground, hydro, building and artifact classification for large-scale flood-risk assessment.</p>
       <div class="mini-list"><span>Buildings</span><span>Flood Modelling</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-568</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Timeline</small><span>24-Oct-2024 to 25-Oct-2024</span></div>
+        <div class="meta-box"><small>Area</small><span>1,400</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
       </div>
     </div>
   </article>
@@ -619,11 +667,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Sunshine Coast</h3>
       <p>Classification and 3D breakline digitization across a Queensland coastal corridor.</p>
       <div class="mini-list"><span>3D Breaklines</span><span>DTM/DSM</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-569</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Powerline / Corridor</span></div>
-        <div class="meta-box"><small>Timeline</small><span>16-Mar-2025 to 23-Mar-2025</span></div>
+        <div class="meta-box"><small>Area</small><span>600</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
       </div>
     </div>
   </article>
@@ -635,11 +684,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>CNC Transmission</h3>
       <p>Powerline classification and danger-object detection for transmission corridor safety.</p>
       <div class="mini-list"><span>Powerline</span><span>Safety</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-PW-570</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Powerline</span></div>
-        <div class="meta-box"><small>Timeline</small><span>24-Apr-2025 to 12-May-2025</span></div>
+        <div class="meta-box"><small>Area</small><span>495</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>KM</span></div>
       </div>
     </div>
   </article>
@@ -651,11 +701,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Victoria DTV</h3>
       <p>Large-area classification suite supporting Victorian digital terrain model production.</p>
       <div class="mini-list"><span>Ground</span><span>Buildings</span><span>Artifacts</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-588</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Timeline</small><span>24-Sep-2025 to 29-Sep-2025</span></div>
+        <div class="meta-box"><small>Area</small><span>2,240</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
       </div>
     </div>
   </article>
@@ -667,11 +718,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Super Pit</h3>
       <p>Ground, hydro feature and atmospheric noise processing for an open-cut mine site.</p>
       <div class="mini-list"><span>Mine Mapping</span><span>Ground</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-603</span></div>
-        <div class="meta-box"><small>Customer</small><span>Chinook Land</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Timeline</small><span>20-Jun-2026</span></div>
+        <div class="meta-box"><small>Area</small><span>128</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
       </div>
     </div>
   </article>
@@ -683,11 +735,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Forest Fire Analysis</h3>
       <p>Ground and vegetation classification with vector capture of fallen woody logs.</p>
       <div class="mini-list"><span>Vegetation</span><span>Log Measurement</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-589</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Timeline</small><span>26-Sep-2025 to 30-Sep-2025</span></div>
+        <div class="meta-box"><small>Area</small><span>200</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>Acre</span></div>
       </div>
     </div>
   </article>
@@ -699,11 +752,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>Canal Alagoano</h3>
       <p>Ortho mosaic and DTM creation from 13,000 drone images over a Brazilian canal corridor.</p>
       <div class="mini-list"><span>13,000 Images</span><span>UAV</span><span>DTM</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-3D-573</span></div>
-        <div class="meta-box"><small>Customer</small><span>McElhanney</span></div>
         <div class="meta-box"><small>Service</small><span>2D Topo / Ortho</span></div>
-        <div class="meta-box"><small>Timeline</small><span>Project sample record</span></div>
+        <div class="meta-box"><small>Area</small><span>52</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
       </div>
     </div>
   </article>
@@ -715,87 +769,163 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <h3>City of Ashland</h3>
       <p>High-density UAV LiDAR classification for ground, vegetation, buildings and utilities.</p>
       <div class="mini-list"><span>600 ppm</span><span>UAV LiDAR</span></div>
+      
       <div class="project-meta">
         <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-591</span></div>
-        <div class="meta-box"><small>Customer</small><span>Rogue Recon</span></div>
         <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Timeline</small><span>29-Oct-2025 to 5-Nov-2025</span></div>
+        <div class="meta-box"><small>Area</small><span>4,300</span></div>
+        <div class="meta-box"><small>Measurement unit</small><span>Acre</span></div>
       </div>
     </div>
   </article>
 </div>
 
-<div class="project-directory reveal">
-  <div class="directory-head">
+
+<div class="more-projects-wrap reveal">
+  <div class="more-projects-head">
     <div>
-      <h3>Project directory</h3>
-      <p>A more detailed project register for the Projects page. This gives visitors a portfolio-style overview with project code, customer, service, schedule and measurement information.</p>
-    </div>
-    <div class="directory-badges">
-      <span>Project Code</span>
-      <span>Customer</span>
-      <span>Service</span>
-      <span>Start / End Date</span>
-      <span>Area / Unit</span>
+      <h3>More project highlights</h3>
+      <p>Additional projects presented in the same visual style as the featured cards. This keeps the Projects section clean and professional without using a table.</p>
     </div>
   </div>
 
-  <div class="table-wrap">
-    <table class="projects-table">
-      <thead>
-        <tr>
-          <th>S.No</th>
-          <th>Project Name</th>
-          <th>Project Type</th>
-          <th>Project Code</th>
-          <th>Customer</th>
-          <th>Service</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Area</th>
-          <th>Unit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>567</td><td>UAS Ashland Project</td><td>#GEO-Lidar</td><td>#GEO-Lidar-567</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>17-Mar-2024</td><td>25-Apr-2024</td><td>4500</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>568</td><td>liberty_6339</td><td>#GEO-Lidar</td><td>#GEO-Lidar-568</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>24-Oct-2024</td><td>25-Oct-2024</td><td>1</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>569</td><td>KawaihaeQuo-Powerline</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-569</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>16-Mar-2025</td><td>23-Mar-2025</td><td>5</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>570</td><td>Waika Waikoloa-Powerline</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-570</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>24-Apr-2025</td><td>12-May-2025</td><td>15</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>571</td><td>Beatty St Sample</td><td>#GEO-3D</td><td>#GEO-3D-571</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">3D Topo Drawing</span></td><td>10-Jun-2025</td><td>16-Jun-2025</td><td>0.2</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>572</td><td>project Phoenix Corridor 20250616</td><td>#GEO-Lidar</td><td>#GEO-Lidar-572</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>20-Jun-2025</td><td>21-Jun-2025</td><td>0.7</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>573</td><td>Richards</td><td>#GEO-3D</td><td>#GEO-3D-573</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">2D Topo Drawing</span></td><td>—</td><td>—</td><td>1.7</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>574</td><td>Buffard</td><td>#GEO-3D</td><td>#GEO-3D-574</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">3D Topo Drawing</span></td><td>—</td><td>—</td><td>1.9</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>575</td><td>Multispecies species classification</td><td>#GEO-2D</td><td>#GEO-2D-575</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service blue">2D Topo Drawing</span></td><td>—</td><td>—</td><td>423</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>576</td><td>Engineering wood</td><td>#GEO-Lidar</td><td>#GEO-Lidar-576</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>8-Aug-2025</td><td>11-Aug-2025</td><td>80</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>577</td><td>Kindwood</td><td>#GEO-3D</td><td>#GEO-3D-577</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">3D Topo Drawing</span></td><td>14-Aug-2025</td><td>23-Aug-2025</td><td>2.4</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>584</td><td>Paisely Rd</td><td>#GEO-3D</td><td>#GEO-3D-584</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">3D Topo Drawing</span></td><td>29-Aug-2025</td><td>4-Sep-2025</td><td>1</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>585</td><td>Pender to cordova</td><td>#GEO-3D</td><td>#GEO-3D-585</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">3D Topo Drawing</span></td><td>3-Sep-2025</td><td>9-Sep-2025</td><td>1</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>586</td><td>Richards</td><td>#GEO-3D</td><td>#GEO-3D-586</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">McElhanney</span></td><td><span class="pill service blue">3D Topo Drawing</span></td><td>12-Sep-2025</td><td>23-Sep-2025</td><td>1.7</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>588</td><td>Koika</td><td>#GEO-Lidar</td><td>#GEO-Lidar-588</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>24-Sep-2025</td><td>29-Sep-2025</td><td>365</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>589</td><td>BCI Abandoned Mines UAS LiDAR Classification</td><td>#GEO-Lidar</td><td>#GEO-Lidar-589</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>26-Sep-2025</td><td>30-Sep-2025</td><td>725</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>591</td><td>Eugene Ash LiDAR UAS LiDAR Classification</td><td>#GEO-Lidar</td><td>#GEO-Lidar-591</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>29-Oct-2025</td><td>5-Nov-2025</td><td>340</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>592</td><td>RFQ - UAV LiDAR Survey Processing</td><td>#GEO-Lidar</td><td>#GEO-Lidar-592</td><td><span class="pill client" style="background:#d9f0d1;color:#1c6b2e">Precise Spatial</span></td><td><span class="pill service">LiDAR Classification</span></td><td>—</td><td>—</td><td>22</td><td><span class="unit-chip purple" style="background:#7d4ab1">Sqkm</span></td></tr>
-        <tr><td>593</td><td>LiDAR Classification - Two Small Parcels (Ninole, Kilohana)</td><td>#GEO-Lidar</td><td>#GEO-Lidar-593</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>9-Dec-2025</td><td>10-Dec-2025</td><td>10</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>594</td><td>Kandes_Lidar classification and mapping</td><td>#GEO-Lidar&mapping</td><td>#GEO-Lidar&mapping-594</td><td><span class="pill client" style="background:#d9f0d1;color:#1c6b2e">Precise Spatial</span></td><td><span class="pill service purple">LiDAR Classification</span></td><td>12-Dec-2025</td><td>22-Dec-2025</td><td>300</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>595</td><td>Kawaihae</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-595</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>15-Feb-2026</td><td>20-Feb-2026</td><td>2</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>596</td><td>waika</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-596</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>15-Feb-2026</td><td>20-Feb-2026</td><td>28</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>597</td><td>waikii</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-597</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>2-Mar-2026</td><td>7-Mar-2026</td><td>16</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>598</td><td>Upper highway</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-598</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>10-Mar-2026</td><td>20-Mar-2026</td><td>29.5</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>599</td><td>20 Acre Lidar classification</td><td>#GEO-Lidar</td><td>#GEO-Lidar-599</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">Chinook Land</span></td><td><span class="pill service">LiDAR Classification</span></td><td>21-Mar-2026</td><td>25-Mar-2026</td><td>20</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>600</td><td>WAS7-Lidar classification</td><td>#GEO-Lidar</td><td>#GEO-Lidar-600</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">Chinook Land</span></td><td><span class="pill service">LiDAR Classification</span></td><td>28-Apr-2026</td><td>2-May-2026</td><td>50</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>601</td><td>Lalamilo</td><td>#GEO-Lidar-PW</td><td>#GEO-Lidar-PW-601</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service green">LiDAR Powerline</span></td><td>29-May-2026</td><td>5-Jun-2026</td><td>10</td><td><span class="unit-chip">KM</span></td></tr>
-        <tr><td>602</td><td>Eugene Ash LiDAR 25052026</td><td>#GEO-Lidar</td><td>#GEO-Lidar-602</td><td><span class="pill client">Rogue Recon</span></td><td><span class="pill service">LiDAR Classification</span></td><td>22-May-2026</td><td>25-May-2026</td><td>125</td><td><span class="unit-chip blue">Acre</span></td></tr>
-        <tr><td>603</td><td>Mining wall dataset-Pix4D</td><td>#GEO-Lidar</td><td>#GEO-Lidar-603</td><td><span class="pill client" style="background:#cfe1fb;color:#244f8f">Chinook Land</span></td><td><span class="pill service">LiDAR Classification</span></td><td>20-Jun-2026</td><td>—</td><td>70</td><td><span class="unit-chip gray">Feet</span></td></tr>
-      </tbody>
-    </table>
-  </div>
+  <div class="more-projects-grid">
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-576</span></div>
+      <h4>Engineering wood</h4>
+      <p>LiDAR classification work for a mid-sized area with production-ready deliverables.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 80</span>
+        <span class="spec"><b>Unit:</b> Acre</span>
+      </div>
+    </article>
 
-  <div class="note-box">
-    <strong>Suggested next enhancement:</strong> We can convert this into a separate dedicated <em>Projects / Case Studies</em> page with search, sorting, customer filters, service tags, and an expandable detail view for each project.
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">3D</span><span class="code">#GEO-3D-577</span></div>
+      <h4>Kindwood</h4>
+      <p>3D topo drawing project delivered as part of detailed spatial design support.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> 3D Topo Drawing</span>
+        <span class="spec"><b>Area:</b> 2.4</span>
+        <span class="spec"><b>Unit:</b> KM</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">3D</span><span class="code">#GEO-3D-584</span></div>
+      <h4>Paisely Rd</h4>
+      <p>Detailed topographic drafting support for a compact linear corridor project.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> 3D Topo Drawing</span>
+        <span class="spec"><b>Area:</b> 1</span>
+        <span class="spec"><b>Unit:</b> KM</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">3D</span><span class="code">#GEO-3D-585</span></div>
+      <h4>Pender to cordova</h4>
+      <p>Linear mapping and 3D drafting support packaged in a concise deliverable set.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> 3D Topo Drawing</span>
+        <span class="spec"><b>Area:</b> 1</span>
+        <span class="spec"><b>Unit:</b> KM</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-588</span></div>
+      <h4>Koika</h4>
+      <p>LiDAR classification package prepared for broader terrain and land-cover interpretation.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 365</span>
+        <span class="spec"><b>Unit:</b> Acre</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-589</span></div>
+      <h4>BCI Abandoned Mines UAS LiDAR Classification</h4>
+      <p>UAS LiDAR classification work supporting mining-related terrain and site understanding.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 725</span>
+        <span class="spec"><b>Unit:</b> Acre</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-592</span></div>
+      <h4>RFQ - UAV LiDAR Survey Processing</h4>
+      <p>UAV LiDAR processing scope prepared around survey and classification requirements.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 22</span>
+        <span class="spec"><b>Unit:</b> Sqkm</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-593</span></div>
+      <h4>LiDAR Classification - Two Small Parcels</h4>
+      <p>Classification workflow executed for compact parcel datasets with quick turnaround.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 10</span>
+        <span class="spec"><b>Unit:</b> Acre</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR + Mapping</span><span class="code">#GEO-Lidar&mapping-594</span></div>
+      <h4>Kandes Lidar classification and mapping</h4>
+      <p>Combined classification and mapping package for a moderate-size geospatial dataset.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 300</span>
+        <span class="spec"><b>Unit:</b> Acre</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">Powerline</span><span class="code">#GEO-Lidar-PW-595</span></div>
+      <h4>Kawaihae</h4>
+      <p>Powerline corridor processing project with compact corridor-length coverage.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Powerline</span>
+        <span class="spec"><b>Area:</b> 2</span>
+        <span class="spec"><b>Unit:</b> KM</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">Powerline</span><span class="code">#GEO-Lidar-PW-598</span></div>
+      <h4>Upper highway</h4>
+      <p>Longer corridor-focused powerline processing for route-level analysis and delivery.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Powerline</span>
+        <span class="spec"><b>Area:</b> 29.5</span>
+        <span class="spec"><b>Unit:</b> KM</span>
+      </div>
+    </article>
+
+    <article class="mini-project">
+      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-603</span></div>
+      <h4>Mining wall dataset-Pix4D</h4>
+      <p>Specialized LiDAR dataset preparation associated with mining wall and Pix4D workflow requirements.</p>
+      <div class="spec-row">
+        <span class="spec"><b>Service:</b> LiDAR Classification</span>
+        <span class="spec"><b>Area:</b> 70</span>
+        <span class="spec"><b>Unit:</b> Feet</span>
+      </div>
+    </article>
   </div>
 </div>
 </div>
 </section>
+
 
 
 <section class="video-section">
