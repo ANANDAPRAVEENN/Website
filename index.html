@@ -332,6 +332,17 @@ button,input,select,textarea{font:inherit}
   font-size:10px;padding:5px 9px;border-radius:999px;
   background:var(--cream);border:1px solid var(--border);color:var(--muted)
 }
+
+.mini-project-media{
+  height:185px;border-radius:16px;overflow:hidden;position:relative;margin:-20px -20px 16px -20px
+}
+.mini-project-media img{
+  width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease
+}
+.mini-project:hover .mini-project-media img{transform:scale(1.05)}
+.mini-project-media:after{
+  content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(7,35,22,.38),transparent 60%)
+}
 .mini-project h4{font-size:16px;line-height:1.35;margin-bottom:8px}
 .mini-project p{font-size:12.5px;color:var(--muted);line-height:1.6}
 .spec-row{
@@ -632,15 +643,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Civil Agriculture</div>
       <h3>Civil Agriculture Design</h3>
       <p>Automated ground classification and hydro feature / atmospheric noise classification.</p>
-      <div class="mini-list"><span>Ground</span><span>Hydro</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-567</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Area</small><span>640</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>Ground</span><span>Hydro</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="lidar environment">
@@ -649,15 +652,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Flood Management</div>
       <h3>Flinders River</h3>
       <p>Ground, hydro, building and artifact classification for large-scale flood-risk assessment.</p>
-      <div class="mini-list"><span>Buildings</span><span>Flood Modelling</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-568</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Area</small><span>1,400</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>Buildings</span><span>Flood Modelling</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="lidar urban">
@@ -666,15 +661,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Urban LiDAR</div>
       <h3>Sunshine Coast</h3>
       <p>Classification and 3D breakline digitization across a Queensland coastal corridor.</p>
-      <div class="mini-list"><span>3D Breaklines</span><span>DTM/DSM</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-569</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Powerline / Corridor</span></div>
-        <div class="meta-box"><small>Area</small><span>600</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>3D Breaklines</span><span>DTM/DSM</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="lidar urban">
@@ -683,15 +670,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Powerline</div>
       <h3>CNC Transmission</h3>
       <p>Powerline classification and danger-object detection for transmission corridor safety.</p>
-      <div class="mini-list"><span>Powerline</span><span>Safety</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-PW-570</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Powerline</span></div>
-        <div class="meta-box"><small>Area</small><span>495</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>KM</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>Powerline</span><span>Safety</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="lidar urban">
@@ -700,15 +679,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">State-wide LiDAR</div>
       <h3>Victoria DTV</h3>
       <p>Large-area classification suite supporting Victorian digital terrain model production.</p>
-      <div class="mini-list"><span>Ground</span><span>Buildings</span><span>Artifacts</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-588</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Area</small><span>2,240</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>Ground</span><span>Buildings</span><span>Artifacts</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="mining">
@@ -717,15 +688,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Mining</div>
       <h3>Super Pit</h3>
       <p>Ground, hydro feature and atmospheric noise processing for an open-cut mine site.</p>
-      <div class="mini-list"><span>Mine Mapping</span><span>Ground</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-603</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Area</small><span>128</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>Mine Mapping</span><span>Ground</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="environment lidar">
@@ -734,15 +697,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Forest Analysis</div>
       <h3>Forest Fire Analysis</h3>
       <p>Ground and vegetation classification with vector capture of fallen woody logs.</p>
-      <div class="mini-list"><span>Vegetation</span><span>Log Measurement</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-589</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Area</small><span>200</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>Acre</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>Vegetation</span><span>Log Measurement</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="photogrammetry">
@@ -751,15 +706,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Drone / UAV</div>
       <h3>Canal Alagoano</h3>
       <p>Ortho mosaic and DTM creation from 13,000 drone images over a Brazilian canal corridor.</p>
-      <div class="mini-list"><span>13,000 Images</span><span>UAV</span><span>DTM</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-3D-573</span></div>
-        <div class="meta-box"><small>Service</small><span>2D Topo / Ortho</span></div>
-        <div class="meta-box"><small>Area</small><span>52</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>SqKm</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>13,000 Images</span><span>UAV</span><span>DTM</span></div></div>
   </article>
 
   <article class="card project-card reveal" data-cat="urban lidar">
@@ -768,15 +715,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="project-type">Urban UAV</div>
       <h3>City of Ashland</h3>
       <p>High-density UAV LiDAR classification for ground, vegetation, buildings and utilities.</p>
-      <div class="mini-list"><span>600 ppm</span><span>UAV LiDAR</span></div>
-      
-      <div class="project-meta">
-        <div class="meta-box"><small>Project code</small><span>#GEO-Lidar-591</span></div>
-        <div class="meta-box"><small>Service</small><span>LiDAR Classification</span></div>
-        <div class="meta-box"><small>Area</small><span>4,300</span></div>
-        <div class="meta-box"><small>Measurement unit</small><span>Acre</span></div>
-      </div>
-    </div>
+      <div class="mini-list"><span>600 ppm</span><span>UAV LiDAR</span></div></div>
   </article>
 </div>
 
@@ -789,142 +728,96 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
     </div>
   </div>
 
-  <div class="more-projects-grid">
+  
+<div class="more-projects-grid">
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-576</span></div>
+      <div class="mini-project-media"><img src="images/logging-operation.jpg" alt="Engineering wood project"></div>
+      <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>Engineering wood</h4>
-      <p>LiDAR classification work for a mid-sized area with production-ready deliverables.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 80</span>
-        <span class="spec"><b>Unit:</b> Acre</span>
-      </div>
+      <p>LiDAR classification project delivered for terrain interpretation and production-ready geospatial outputs.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">3D</span><span class="code">#GEO-3D-577</span></div>
+      <div class="mini-project-media"><img src="images/200.png" alt="Kindwood project"></div>
+      <div class="topline"><span class="ptype">3D</span></div>
       <h4>Kindwood</h4>
-      <p>3D topo drawing project delivered as part of detailed spatial design support.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> 3D Topo Drawing</span>
-        <span class="spec"><b>Area:</b> 2.4</span>
-        <span class="spec"><b>Unit:</b> KM</span>
-      </div>
+      <p>3D topo drawing work supporting detailed spatial drafting and engineering-ready mapping deliverables.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">3D</span><span class="code">#GEO-3D-584</span></div>
+      <div class="mini-project-media"><img src="images/Transport.png" alt="Paisely Rd project"></div>
+      <div class="topline"><span class="ptype">3D</span></div>
       <h4>Paisely Rd</h4>
-      <p>Detailed topographic drafting support for a compact linear corridor project.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> 3D Topo Drawing</span>
-        <span class="spec"><b>Area:</b> 1</span>
-        <span class="spec"><b>Unit:</b> KM</span>
-      </div>
+      <p>Road-related topographic drafting support for a compact corridor-focused project environment.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">3D</span><span class="code">#GEO-3D-585</span></div>
+      <div class="mini-project-media"><img src="images/Transport.png" alt="Pender to cordova project"></div>
+      <div class="topline"><span class="ptype">3D</span></div>
       <h4>Pender to cordova</h4>
-      <p>Linear mapping and 3D drafting support packaged in a concise deliverable set.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> 3D Topo Drawing</span>
-        <span class="spec"><b>Area:</b> 1</span>
-        <span class="spec"><b>Unit:</b> KM</span>
-      </div>
+      <p>Detailed mapping and drafting support for a linear urban infrastructure segment.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-588</span></div>
+      <div class="mini-project-media"><img src="images/Lidar classification.png" alt="Koika project"></div>
+      <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>Koika</h4>
-      <p>LiDAR classification package prepared for broader terrain and land-cover interpretation.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 365</span>
-        <span class="spec"><b>Unit:</b> Acre</span>
-      </div>
+      <p>LiDAR classification package produced for terrain and land-cover interpretation workflows.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-589</span></div>
+      <div class="mini-project-media"><img src="images/Mine.jpg" alt="BCI Abandoned Mines project"></div>
+      <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>BCI Abandoned Mines UAS LiDAR Classification</h4>
-      <p>UAS LiDAR classification work supporting mining-related terrain and site understanding.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 725</span>
-        <span class="spec"><b>Unit:</b> Acre</span>
-      </div>
+      <p>UAS LiDAR classification support for mining-related terrain modelling and site analysis.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-592</span></div>
+      <div class="mini-project-media"><img src="images/Lidar classifcation_Ashland.png" alt="UAV LiDAR survey processing project"></div>
+      <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>RFQ - UAV LiDAR Survey Processing</h4>
-      <p>UAV LiDAR processing scope prepared around survey and classification requirements.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 22</span>
-        <span class="spec"><b>Unit:</b> Sqkm</span>
-      </div>
+      <p>UAV LiDAR processing workflow aligned to survey-grade classification and deliverable requirements.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-593</span></div>
+      <div class="mini-project-media"><img src="images/Lidar classifcation_Ashland.png" alt="Two small parcels project"></div>
+      <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>LiDAR Classification - Two Small Parcels</h4>
-      <p>Classification workflow executed for compact parcel datasets with quick turnaround.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 10</span>
-        <span class="spec"><b>Unit:</b> Acre</span>
-      </div>
+      <p>Compact parcel classification project completed for smaller-area LiDAR production needs.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR + Mapping</span><span class="code">#GEO-Lidar&mapping-594</span></div>
-      <h4>Kandes Lidar classification and mapping</h4>
+      <div class="mini-project-media"><img src="images/Guid Map.png" alt="Kandes mapping project"></div>
+      <div class="topline"><span class="ptype">LiDAR + Mapping</span></div>
+      <h4>Kandes LiDAR classification and mapping</h4>
       <p>Combined classification and mapping package for a moderate-size geospatial dataset.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 300</span>
-        <span class="spec"><b>Unit:</b> Acre</span>
-      </div>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">Powerline</span><span class="code">#GEO-Lidar-PW-595</span></div>
+      <div class="mini-project-media"><img src="images/Powerline classification.png" alt="Kawaihae powerline project"></div>
+      <div class="topline"><span class="ptype">Powerline</span></div>
       <h4>Kawaihae</h4>
-      <p>Powerline corridor processing project with compact corridor-length coverage.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Powerline</span>
-        <span class="spec"><b>Area:</b> 2</span>
-        <span class="spec"><b>Unit:</b> KM</span>
-      </div>
+      <p>Powerline corridor project with focused processing for utility-aligned linear infrastructure mapping.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">Powerline</span><span class="code">#GEO-Lidar-PW-598</span></div>
+      <div class="mini-project-media"><img src="images/PowerLine_03.jpg" alt="Upper highway project"></div>
+      <div class="topline"><span class="ptype">Powerline</span></div>
       <h4>Upper highway</h4>
-      <p>Longer corridor-focused powerline processing for route-level analysis and delivery.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Powerline</span>
-        <span class="spec"><b>Area:</b> 29.5</span>
-        <span class="spec"><b>Unit:</b> KM</span>
-      </div>
+      <p>Extended corridor processing for route-level utility and transportation analysis requirements.</p>
     </article>
 
     <article class="mini-project">
-      <div class="topline"><span class="ptype">LiDAR</span><span class="code">#GEO-Lidar-603</span></div>
-      <h4>Mining wall dataset-Pix4D</h4>
-      <p>Specialized LiDAR dataset preparation associated with mining wall and Pix4D workflow requirements.</p>
-      <div class="spec-row">
-        <span class="spec"><b>Service:</b> LiDAR Classification</span>
-        <span class="spec"><b>Area:</b> 70</span>
-        <span class="spec"><b>Unit:</b> Feet</span>
-      </div>
+      <div class="mini-project-media"><img src="images/Mine.jpg" alt="Mining wall dataset project"></div>
+      <div class="topline"><span class="ptype">LiDAR</span></div>
+      <h4>Mining wall dataset - Pix4D</h4>
+      <p>Specialized dataset preparation supporting mining wall interpretation and Pix4D-based workflows.</p>
     </article>
   </div>
 </div>
 </div>
 </section>
+
 
 
 
