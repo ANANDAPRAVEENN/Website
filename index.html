@@ -94,6 +94,14 @@ button,input,select,textarea{font:inherit}
 .nav.scrolled .menu-btn{color:var(--ink)}
 
 /* HERO */
+
+.hero > .container{
+  width:100%;
+  max-width:none;
+  padding-left:clamp(28px,4vw,72px);
+  padding-right:clamp(28px,4vw,72px);
+}
+
 .hero{
   min-height:100vh;position:relative;display:flex;align-items:center;
   background:
@@ -108,7 +116,7 @@ button,input,select,textarea{font:inherit}
 }
 .hero-grid{
   position:relative;z-index:2;display:block;
-  min-height:650px;
+  min-height:610px;
 }
 .hero-grid > div:first-child{
   max-width:760px;
@@ -149,11 +157,11 @@ button,input,select,textarea{font:inherit}
 .hero-panel{
   position:absolute;
   right:0;
-  bottom:0;
-  width:min(560px,42vw);
+  bottom:4px;
+  width:min(500px,39vw);
   border:1px solid rgba(255,255,255,.34);
-  border-radius:22px;
-  padding:11px;
+  border-radius:20px;
+  padding:10px;
   background:rgba(255,255,255,.17);
   backdrop-filter:blur(14px);
   box-shadow:0 20px 55px rgba(10,45,29,.16);
@@ -161,7 +169,7 @@ button,input,select,textarea{font:inherit}
 .hero-panel-top{display:flex;align-items:center;justify-content:space-between;padding:5px 6px 9px}
 .hero-panel-top span:first-child{font-size:12px;font-weight:700}
 .hero-panel-top span:last-child{font-size:10px;color:rgba(255,255,255,.58)}
-#client-map{height:300px;border-radius:15px;overflow:hidden}
+#client-map{height:270px;border-radius:14px;overflow:hidden}
 .map-chip{
   display:flex;justify-content:space-between;align-items:center;gap:15px;
   margin-top:8px;background:rgba(255,255,255,.20);border-radius:11px;
@@ -449,6 +457,10 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
   .hero-grid,.why-grid,.about-grid,.contact-shell{grid-template-columns:1fr}
   .hero{padding-top:120px}
   .hero-grid{min-height:auto}
+  .hero > .container{
+    padding-left:24px;
+    padding-right:24px;
+  }
   .hero-panel{
     position:relative;
     right:auto;
