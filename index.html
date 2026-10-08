@@ -6,562 +6,25 @@
 <meta name="description" content="Geoinformatics — LiDAR, GIS, photogrammetry, laser scanning and spatial intelligence services."/>
 <link rel="icon" type="image/png" href="images/Logo.png"/>
 <title>Geoinformatics — Spatial Intelligence & Geospatial Services</title>
+<link rel="canonical" href="https://website-tau-sand-78.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Geoinformatics — Spatial Intelligence & Geospatial Services">
+<meta property="og:description" content="LiDAR processing, photogrammetry, GIS and engineering services. Explore our global project portfolio.">
+<meta property="og:url" content="https://website-tau-sand-78.vercel.app/">
+<meta property="og:image" content="https://website-tau-sand-78.vercel.app/images/Cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#155b3a">
+<link rel="preload" as="image" href="assets/cover.webp" fetchpriority="high">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css"/>
 
-<style>
-:root{
-  --ink:#10231a;
-  --ink-2:#193328;
-  --forest:#155b3a;
-  --forest-2:#1f7a50;
-  --mint:#dff3e8;
-  --lime:#a8d9b7;
-  --cream:#f6f8f5;
-  --white:#ffffff;
-  --muted:#66736c;
-  --border:rgba(16,35,26,.11);
-  --shadow:0 24px 70px rgba(17,54,37,.10);
-  --shadow-soft:0 14px 35px rgba(17,54,37,.065);
-  --radius:22px;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  font-family:"Manrope",sans-serif;
-  color:var(--ink);
-  background:var(--white);
-  line-height:1.65;
-  overflow-x:hidden;
-}
-a{text-decoration:none;color:inherit}
-img{max-width:100%;display:block}
-button,input,select,textarea{font:inherit}
-[id]{scroll-margin-top:96px}
-
-.container{width:min(1480px,calc(100% - 56px));margin:auto}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-  font-weight:700;color:var(--forest-2)
-}
-.eyebrow:before{content:"";width:28px;height:1px;background:currentColor}
-.section-title{
-  font-family:"Playfair Display",serif;
-  font-size:clamp(2.1rem,4vw,3.4rem);
-  line-height:1.08;font-weight:500;letter-spacing:-.025em;
-  margin-top:14px;
-}
-.section-copy{margin-top:16px;color:var(--muted);max-width:650px;font-size:15px}
-.section{padding:104px 0}
-.soft{background:linear-gradient(180deg,#f7faf7 0%,#f1f7f3 100%)}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
-.reveal.visible{opacity:1;transform:none}
-
-/* NAV */
-.nav{
-  position:fixed;inset:0 0 auto 0;z-index:500;
-  transition:.3s ease;border-bottom:1px solid rgba(255,255,255,.08);
-  background:linear-gradient(to bottom,rgba(7,39,24,.24),rgba(7,39,24,0))
-}
-.nav.scrolled{
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(18px);
-  border-color:var(--border);
-  box-shadow:0 8px 30px rgba(0,0,0,.05)
-}
-.nav-inner{height:82px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:11px;color:white}
-.nav.scrolled .brand{color:var(--ink)}
-.brand img{height:46px;width:auto}
-.brand-name{font-family:"Playfair Display",serif;font-size:19px;line-height:1}
-.brand-sub{font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin-top:5px}
-.nav-links{display:flex;align-items:center;gap:28px}
-.nav-links a{font-size:13px;color:rgba(255,255,255,.85);font-weight:600}
-.nav.scrolled .nav-links a{color:var(--muted)}
-.nav-links a:hover{color:var(--mint)}
-.nav.scrolled .nav-links a:hover{color:var(--forest)}
-.nav-cta{
-  padding:10px 17px;border:1px solid rgba(255,255,255,.42);
-  border-radius:999px!important;color:#fff!important
-}
-.nav.scrolled .nav-cta{background:var(--forest);border-color:var(--forest);color:#fff!important}
-.menu-btn{display:none;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
-.nav.scrolled .menu-btn{color:var(--ink)}
-
-/* HERO */
-
-.hero > .container{
-  width:100%;
-  max-width:none;
-  padding-left:clamp(28px,4vw,72px);
-  padding-right:clamp(28px,4vw,72px);
-}
-
-.hero{
-  min-height:100vh;position:relative;display:flex;align-items:center;
-  background:
-    linear-gradient(90deg,rgba(8,45,28,.76) 0%,rgba(12,62,38,.54) 43%,rgba(11,52,34,.16) 100%),
-    url("images/Cover.jpg") center 44%/cover no-repeat;
-  color:#fff;
-  padding:112px 0 48px;
-}
-.hero:after{
-  content:"";position:absolute;inset:auto 0 0;height:150px;
-  background:linear-gradient(to top,rgba(13,61,39,.20),transparent);pointer-events:none
-}
-.hero-grid{
-  position:relative;z-index:2;display:block;
-  min-height:610px;
-}
-.hero-grid > div:first-child{
-  max-width:760px;
-  position:relative;
-  z-index:3;
-}
-.hero-kicker{
-  display:inline-flex;align-items:center;gap:10px;
-  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);
-  backdrop-filter:blur(8px);padding:8px 13px;border-radius:999px;
-  font-size:11px;letter-spacing:.13em;text-transform:uppercase
-}
-.hero-kicker .dot{width:6px;height:6px;border-radius:50%;background:#8ee0ab;box-shadow:0 0 0 5px rgba(142,224,171,.12)}
-.hero h1{
-  font-family:"Playfair Display",serif;font-weight:500;
-  font-size:clamp(3.25rem,5.5vw,5.65rem);line-height:.96;letter-spacing:-.04em;
-  margin:24px 0;
-  text-shadow:0 2px 18px rgba(5,31,20,.22)
-}
-.hero h1 em{color:#b9efc9;font-style:italic;font-weight:500}
-.hero p{font-size:16px;color:rgba(255,255,255,.77);max-width:620px;line-height:1.8}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  border-radius:999px;padding:13px 21px;font-size:13px;font-weight:700;
-  transition:.25s ease
-}
-.btn-primary{background:#fff;color:var(--forest)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.15)}
-.btn-ghost{border:1px solid rgba(255,255,255,.3);color:#fff;background:rgba(255,255,255,.05)}
-.btn-ghost:hover{background:rgba(255,255,255,.12)}
-.hero-stats{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
-  margin-top:46px;padding-top:28px;border-top:1px solid rgba(255,255,255,.14)
-}
-.stat strong{display:block;font-family:"Playfair Display",serif;font-size:2.2rem;font-weight:500;color:#fff}
-.stat span{font-size:11px;letter-spacing:.05em;color:rgba(255,255,255,.62)}
-.hero-panel{
-  position:absolute;
-  right:0;
-  bottom:4px;
-  width:min(500px,39vw);
-  border:1px solid rgba(255,255,255,.34);
-  border-radius:20px;
-  padding:10px;
-  background:rgba(255,255,255,.17);
-  backdrop-filter:blur(14px);
-  box-shadow:0 20px 55px rgba(10,45,29,.16);
-}
-.hero-panel-top{display:flex;align-items:center;justify-content:space-between;padding:5px 6px 9px}
-.hero-panel-top span:first-child{font-size:12px;font-weight:700}
-.hero-panel-top span:last-child{font-size:10px;color:rgba(255,255,255,.58)}
-#client-map{height:270px;border-radius:14px;overflow:hidden}
-.map-chip{
-  display:flex;justify-content:space-between;align-items:center;gap:15px;
-  margin-top:8px;background:rgba(255,255,255,.20);border-radius:11px;
-  padding:8px 10px;color:rgba(255,255,255,.92);font-size:10px
-}
-
-/* capability strip */
-.cap-strip{
-  background:linear-gradient(90deg,#eef7f1 0%,#ffffff 50%,#eef7f1 100%);
-  color:var(--ink);
-  border-top:1px solid rgba(16,35,26,.08);
-  border-bottom:1px solid rgba(16,35,26,.08)
-}
-.cap-row{display:grid;grid-template-columns:repeat(5,1fr)}
-.cap-item{
-  padding:22px 18px;border-right:1px solid rgba(16,35,26,.08);
-  text-align:center;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--forest);font-weight:700
-}
-.cap-item:last-child{border-right:0}
-
-/* CARDS */
-.card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  overflow:hidden;box-shadow:0 0 0 rgba(0,0,0,0);
-  transition:.32s cubic-bezier(.2,.7,.3,1)
-}
-.card:hover{transform:translateY(-7px);box-shadow:var(--shadow-soft);border-color:rgba(31,122,80,.26)}
-.card-media{height:200px;overflow:hidden;position:relative}
-.card-media img{width:100%;height:100%;object-fit:cover;transition:.55s ease}
-.card:hover .card-media img{transform:scale(1.055)}
-.card-media:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(5,31,19,.38),transparent 55%)}
-.card-body{padding:24px}
-.card h3{font-size:18px;margin-bottom:8px;letter-spacing:-.015em}
-.card p{font-size:13px;color:var(--muted)}
-.tag{
-  position:absolute;left:14px;bottom:14px;z-index:2;
-  color:#fff;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  background:rgba(10,43,27,.56);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.17);padding:6px 10px;border-radius:999px
-}
-.mini-list{margin-top:15px;display:flex;gap:7px;flex-wrap:wrap}
-.mini-list span{font-size:10px;background:var(--cream);border:1px solid var(--border);padding:5px 8px;border-radius:999px;color:var(--muted)}
-
-/* SERVICES */
-.services-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:44px}
-.services-head .section-copy{margin:0;max-width:420px}
-.service-card .card-media{height:175px}
-.service-card .num{font-family:"Playfair Display",serif;color:var(--forest-2);font-size:13px;margin-bottom:10px}
-.service-card ul{list-style:none;margin-top:15px;display:grid;gap:7px}
-.service-card li{font-size:12px;color:var(--muted);display:flex;gap:8px}
-.service-card li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--forest-2);margin-top:7px;flex:0 0 auto}
-
-/* WHY */
-.why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:center}
-.why-image{position:relative}
-.why-image img{width:100%;height:590px;object-fit:cover;border-radius:28px;box-shadow:var(--shadow)}
-.floating-card{
-  position:absolute;right:-26px;bottom:34px;width:min(290px,80%);
-  background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--shadow-soft)
-}
-.floating-card strong{font-family:"Playfair Display",serif;font-size:2rem;color:var(--forest);display:block}
-.floating-card span{font-size:12px;color:var(--muted)}
-.points{display:grid;gap:15px;margin-top:30px}
-.point{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:start;padding:16px 0;border-bottom:1px solid var(--border)}
-.point:last-child{border-bottom:0}
-.point-icon{width:42px;height:42px;border-radius:14px;background:var(--mint);display:flex;align-items:center;justify-content:center;color:var(--forest);font-weight:700}
-.point h4{font-size:14px;margin-bottom:4px}
-.point p{font-size:12.5px;color:var(--muted)}
-
-/* INDUSTRIES */
-.industries .card-media{height:240px}
-.industry-num{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--forest-2);margin-bottom:5px}
-
-/* PROJECTS */
-.project-toolbar{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:36px}
-.filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.filter-btn{
-  border:1px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;
-  border-radius:999px;padding:8px 12px;font-size:11px;font-weight:600
-}
-.filter-btn.active,.filter-btn:hover{background:var(--forest);border-color:var(--forest);color:#fff}
-.project-card{position:relative}
-.project-card .card-media{height:245px}
-.area-badge{
-  position:absolute;top:14px;right:14px;z-index:2;background:rgba(255,255,255,.92);
-  backdrop-filter:blur(10px);padding:6px 9px;border-radius:999px;font-size:10px;color:var(--ink)
-}
-.project-card .project-type{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--forest-2);font-weight:700;margin-bottom:7px}
-
-.project-meta{
-  margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px
-}
-.meta-box{
-  background:var(--cream);border:1px solid var(--border);
-  border-radius:12px;padding:10px 12px
-}
-.meta-box small{
-  display:block;font-size:10px;letter-spacing:.10em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:4px
-}
-.meta-box span{font-size:12px;color:var(--ink);font-weight:600}
-.project-directory{
-  margin-top:56px;background:#fff;border:1px solid var(--border);
-  border-radius:24px;overflow:hidden;box-shadow:var(--shadow-soft)
-}
-.directory-head{
-  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
-  padding:28px 28px 18px;background:linear-gradient(180deg,#f8fbf8 0%,#ffffff 100%);
-  border-bottom:1px solid var(--border)
-}
-.directory-head h3{
-  font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:500;letter-spacing:-.02em
-}
-.directory-head p{font-size:13px;color:var(--muted);max-width:650px;margin-top:6px}
-.directory-badges{display:flex;gap:8px;flex-wrap:wrap}
-.directory-badges span{
-  font-size:11px;padding:7px 10px;border-radius:999px;
-  background:var(--cream);border:1px solid var(--border);color:var(--forest)
-}
-.table-wrap{overflow:auto}
-.projects-table{
-  width:100%;border-collapse:collapse;min-width:1180px;background:#fff
-}
-.projects-table thead th{
-  position:sticky;top:0;background:#163d76;color:#fff;
-  font-size:12px;font-weight:700;padding:13px 12px;text-align:left;white-space:nowrap
-}
-.projects-table tbody td{
-  font-size:12px;padding:12px;border-bottom:1px solid #edf1ee;vertical-align:top;color:var(--ink)
-}
-.projects-table tbody tr:nth-child(even){background:#fbfcfb}
-.projects-table tbody tr:hover{background:#f3f9f5}
-.pill{
-  display:inline-flex;align-items:center;gap:6px;padding:5px 9px;
-  border-radius:999px;font-size:11px;font-weight:700;line-height:1;white-space:nowrap
-}
-.pill.client{background:#efe2af;color:#6a5320}
-.pill.service{background:#f4dc89;color:#765b16}
-.pill.service.green{background:#ccefc9;color:#1c6b2e}
-.pill.service.blue{background:#d7e7ff;color:#2256a5}
-.pill.service.purple{background:#eadbff;color:#6f3fb0}
-.unit-chip{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-width:58px;padding:5px 10px;border-radius:999px;
-  background:#1d5a5d;color:#fff;font-size:11px;font-weight:700
-}
-.unit-chip.blue{background:#1e5ab0}
-.unit-chip.gray{background:#59646d}
-.note-box{
-  margin:18px 28px 26px;padding:16px 18px;border-radius:16px;
-  background:#f7faf8;border:1px solid var(--border);font-size:12.5px;color:var(--muted)
-}
-.note-box strong{color:var(--ink)}
-
-.more-projects-wrap{margin-top:54px}
-.more-projects-head{
-  display:flex;justify-content:space-between;align-items:end;gap:24px;
-  margin-bottom:24px
-}
-.more-projects-head h3{
-  font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:500;letter-spacing:-.02em
-}
-.more-projects-head p{font-size:13px;color:var(--muted);max-width:760px;margin-top:6px}
-
-.more-projects-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-  align-items:stretch
-}
-.mini-project{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:24px;
-  overflow:hidden;
-  transition:.25s ease;
-  box-shadow:0 0 0 rgba(0,0,0,0);
-  display:flex;
-  flex-direction:column;
-  min-height:320px;
-  height:100%
-}
-.mini-project:hover{
-  transform:translateY(-4px);
-  box-shadow:var(--shadow-soft);
-  border-color:rgba(31,122,80,.22)
-}
-.mini-project-media{
-  height:185px;
-  overflow:hidden;
-  position:relative;
-  margin:0
-}
-.mini-project-media img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:transform .45s ease
-}
-.mini-project:hover .mini-project-media img{transform:scale(1.05)}
-.mini-project-media:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(7,35,22,.18),transparent 60%)
-}
-.mini-project .topline{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin:18px 20px 10px
-}
-.mini-project .ptype{
-  font-size:10px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--forest-2);
-  font-weight:700
-}
-.mini-project .code{
-  font-size:10px;
-  padding:5px 9px;
-  border-radius:999px;
-  background:var(--cream);
-  border:1px solid var(--border);
-  color:var(--muted)
-}
-.mini-project h4{
-  font-size:16px;
-  line-height:1.35;
-  margin:0 20px 10px
-}
-.mini-project p{
-  font-size:12.5px;
-  color:var(--muted);
-  line-height:1.7;
-  margin:0 20px 20px;
-  flex-grow:1
-}
-.spec-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:14px
-}
-.spec{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:7px 10px;
-  border-radius:999px;
-  background:#f7faf8;
-  border:1px solid var(--border);
-  font-size:11px;
-  color:var(--ink)
-}
-.spec b{font-weight:700;color:var(--forest)}
-@media(max-width:980px){
-  .more-projects-grid{grid-template-columns:repeat(2,1fr)}
-  .more-projects-head{flex-direction:column;align-items:flex-start}
-}
-@media(max-width:640px){
-  .more-projects-grid{grid-template-columns:1fr}
-}
-
-@media(max-width:980px){
-  .project-meta{grid-template-columns:1fr}
-  .directory-head{flex-direction:column;align-items:flex-start}
-}
-
-/* VIDEO */
-.video-section{padding:0;background:var(--ink);position:relative}
-.video-wrap{position:relative;max-height:660px;overflow:hidden}
-.video-wrap video{width:100%;max-height:660px;object-fit:cover;display:block;cursor:pointer}
-.video-overlay{
-  position:absolute;inset:0;background:linear-gradient(rgba(4,24,15,.38),rgba(4,24,15,.55));
-  display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#fff;cursor:pointer
-}
-.play{width:86px;height:86px;border-radius:50%;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.12);backdrop-filter:blur(10px);display:grid;place-items:center;margin-bottom:18px;transition:.25s}
-.video-overlay:hover .play{transform:scale(1.07);background:rgba(255,255,255,.18)}
-.video-overlay h3{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:500}
-.video-overlay p{margin-top:8px;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.68)}
-#mute-btn{display:none;position:absolute;right:22px;bottom:22px;z-index:4;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.4);color:#fff;border-radius:999px;padding:9px 13px;cursor:pointer}
-
-/* ABOUT */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:center}
-.about-photo{border-radius:28px;overflow:hidden;position:relative}
-.about-photo img{width:100%;height:560px;object-fit:cover}
-.about-copy p{font-size:14px;color:var(--muted);margin-top:16px}
-.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
-.about-hi{padding:16px;border:1px solid var(--border);border-radius:15px;background:var(--cream);font-size:12px;color:var(--muted)}
-.about-hi b{color:var(--ink);display:block;margin-bottom:4px}
-
-/* CONTACT */
-.contact-shell{
-  display:grid;grid-template-columns:.85fr 1.15fr;gap:58px;
-  background:linear-gradient(135deg,#edf7f0 0%,#ffffff 100%);
-  border:1px solid var(--border);border-radius:32px;padding:58px;color:var(--ink);
-  box-shadow:var(--shadow)
-}
-.contact-shell .section-copy{color:rgba(255,255,255,.63)}
-.contact-details{margin-top:30px;display:grid;gap:13px}
-.contact-detail{padding:14px 0;border-bottom:1px solid var(--border)}
-.contact-detail small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:#96c5a7;margin-bottom:4px}
-.contact-detail span{font-size:13px;color:rgba(255,255,255,.82)}
-.form-card{background:#fff;color:var(--ink);border-radius:24px;padding:28px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
-.field input,.field select,.field textarea{
-  width:100%;border:1px solid var(--border);border-radius:12px;padding:11px 12px;
-  outline:none;background:#fbfcfb;color:var(--ink)
-}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--forest-2);box-shadow:0 0 0 3px rgba(31,122,80,.08)}
-.field textarea{min-height:110px;resize:vertical}
-.submit{width:100%;border:0;border-radius:12px;padding:12px;background:var(--forest);color:#fff;font-weight:700;cursor:pointer}
-.submit:hover{background:#0f472d}
-
-/* FOOTER */
-footer{background:#103424;color:#fff;padding:64px 0 30px}
-.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:42px}
-.footer-brand p{color:rgba(255,255,255,.48);font-size:12.5px;max-width:360px;margin-top:15px}
-.footer-col h4{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#9ac7aa;margin-bottom:15px}
-.footer-col a{display:block;font-size:12.5px;color:rgba(255,255,255,.61);margin:8px 0}
-.footer-col a:hover{color:#fff}
-.footer-bottom{margin-top:44px;padding-top:22px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;gap:20px;align-items:center}
-.footer-bottom p{font-size:11px;color:rgba(255,255,255,.38)}
-.linkedin{display:inline-flex;align-items:center;gap:8px;margin-top:18px;border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:8px 12px;color:rgba(255,255,255,.82);font-size:11px}
-
-/* Leaflet */
-.leaflet-container{font-family:"Manrope",sans-serif}
-.leaflet-popup-content-wrapper{border-radius:14px!important}
-.leaflet-popup-content{font-size:12px!important}
-.leaflet-popup-content strong{display:block;color:var(--forest);font-size:13px}
-.leaflet-popup-content span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-
-/* RESPONSIVE */
-@media(max-width:980px){
-  .hero-grid,.why-grid,.about-grid,.contact-shell{grid-template-columns:1fr}
-  .hero{padding-top:120px}
-  .hero-grid{min-height:auto}
-  .hero > .container{
-    padding-left:24px;
-    padding-right:24px;
-  }
-  .hero-panel{
-    position:relative;
-    right:auto;
-    bottom:auto;
-    width:100%;
-    max-width:700px;
-    margin-top:38px;
-  }
-  #client-map{height:340px}
-  .grid-3{grid-template-columns:repeat(2,1fr)}
-  .footer-grid{grid-template-columns:1fr 1fr}
-  .nav-links{
-    display:none;position:absolute;top:82px;left:24px;right:24px;
-    background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;
-    box-shadow:var(--shadow-soft);flex-direction:column;align-items:stretch;gap:0
-  }
-  .nav-links.open{display:flex}
-  .nav-links a,.nav.scrolled .nav-links a{color:var(--ink);padding:11px 8px}
-  .nav-cta{text-align:center;background:var(--forest)!important;color:#fff!important;margin-top:6px}
-  .menu-btn{display:block}
-  .services-head,.project-toolbar{align-items:flex-start;flex-direction:column}
-  .filters{justify-content:flex-start}
-  .floating-card{right:20px}
-  .cap-row{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:640px){
-  .container{width:min(100% - 28px,1480px)}
-  .section{padding:76px 0}
-  .hero h1{font-size:3.25rem}
-  .hero-grid{gap:40px}
-  #client-map{height:340px}
-  .hero-stats{gap:8px}
-  .stat strong{font-size:1.75rem}
-  .grid-3{grid-template-columns:1fr}
-  .form-grid,.about-highlights{grid-template-columns:1fr}
-  .contact-shell{padding:30px 20px;border-radius:24px}
-  .footer-grid{grid-template-columns:1fr}
-  .footer-bottom{align-items:flex-start;flex-direction:column}
-  .why-image img,.about-photo img{height:430px}
-  .cap-row{grid-template-columns:1fr 1fr}
-}
-</style>
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
 <header class="nav" id="nav">
   <div class="container nav-inner">
@@ -579,11 +42,11 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <a href="#about">About</a>
       <a class="nav-cta" href="#contact">Start a Project</a>
     </nav>
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks" type="button">☰</button>
   </div>
 </header>
 
-<main>
+<main id="main-content">
 <section class="hero" id="home">
   <div class="container hero-grid">
     <div>
@@ -595,9 +58,9 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
         <a class="btn btn-ghost" href="#projects">View Project Portfolio</a>
       </div>
       <div class="hero-stats reveal">
-        <div class="stat"><strong><span class="count" data-target="200">0</span>+</strong><span>Projects delivered</span></div>
-        <div class="stat"><strong><span class="count" data-target="10">0</span>+</strong><span>Countries served</span></div>
-        <div class="stat"><strong><span class="count" data-target="10">0</span>+</strong><span>Years of expertise</span></div>
+        <div class="stat"><strong><span class="count" data-target="200">200</span>+</strong><span>Projects delivered</span></div>
+        <div class="stat"><strong><span class="count" data-target="10">10</span>+</strong><span>Countries served</span></div>
+        <div class="stat"><strong><span class="count" data-target="10">10</span>+</strong><span>Years of expertise</span></div>
       </div>
     </div>
 
@@ -606,9 +69,9 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
         <span>Global project footprint</span>
         <span>Interactive map</span>
       </div>
-      <div id="client-map"></div>
+      <div id="client-map" aria-label="Map of project locations"><p class="map-fallback">Project experience across Australia, North America, South America, Europe and India.</p></div>
       <div class="map-chip">
-        <span>11 client locations across 6 continents</span>
+        <span>11 locations across 5 continents</span>
         <span>Chennai HQ ●</span>
       </div>
     </div>
@@ -637,32 +100,32 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
 
     <div class="grid-3">
       <article class="card service-card reveal">
-        <div class="card-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_05 PM-4.png" alt="LiDAR point cloud classification"><span class="tag">Point Cloud</span></div>
+        <div class="card-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-05-pm-4.webp" alt="LiDAR point cloud classification" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-05-pm-4-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-05-pm-4.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="tag">Point Cloud</span></div>
         <div class="card-body"><div class="num">01</div><h3>LiDAR Processing</h3><p>High-volume point cloud processing and classification for terrain, corridor and asset mapping programs.</p><ul><li>Strip adjustment & calibration</li><li>Ground, building & vegetation classification</li><li>Powerline, hydro & artifact classification</li><li>DTM / DSM production</li></ul></div>
       </article>
 
       <article class="card service-card reveal">
-        <div class="card-media"><img src="images/Photogrametry.jpg" alt="Photogrammetry processing"><span class="tag">Imagery</span></div>
+        <div class="card-media"><img src="assets/photogrametry.webp" alt="Photogrammetry processing" width="700" height="467" loading="lazy" decoding="async" srcset="assets/photogrametry-500.webp 500w, assets/photogrametry.webp 700w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="tag">Imagery</span></div>
         <div class="card-body"><div class="num">02</div><h3>Photogrammetry</h3><p>Precision imagery workflows for aerial triangulation, 3D reconstruction and mapping-grade production.</p><ul><li>Aerial triangulation</li><li>3D city modelling</li><li>DEM / DTM generation</li><li>Planimetric feature extraction</li></ul></div>
       </article>
 
       <article class="card service-card reveal">
-        <div class="card-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_12 PM-7.png" alt="GIS mapping"><span class="tag">Spatial Data</span></div>
+        <div class="card-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-12-pm-7.webp" alt="GIS mapping" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-12-pm-7-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-12-pm-7.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="tag">Spatial Data</span></div>
         <div class="card-body"><div class="num">03</div><h3>GIS Services</h3><p>Enterprise-ready mapping, geodatabases and spatial data services for public and private-sector programs.</p><ul><li>Topographic & cadastral mapping</li><li>Thematic mapping</li><li>GPS survey support</li><li>Utility & pipeline GIS databases</li></ul></div>
       </article>
 
       <article class="card service-card reveal">
-        <div class="card-media"><img src="images/Ortho.png" alt="Orthophoto production"><span class="tag">Orthomosaic</span></div>
+        <div class="card-media"><img src="assets/ortho.webp" alt="Orthophoto production" width="1000" height="490" loading="lazy" decoding="async" srcset="assets/ortho-500.webp 500w, assets/ortho.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="tag">Orthomosaic</span></div>
         <div class="card-body"><div class="num">04</div><h3>Orthophoto Production</h3><p>Consistent, production-grade ortho imagery for basemaps, engineering, planning and asset management.</p><ul><li>Ortho generation & mosaicing</li><li>Colour balancing</li><li>Seamline editing</li><li>Tile cutting & edge matching</li></ul></div>
       </article>
 
       <article class="card service-card reveal">
-        <div class="card-media"><img src="images/laser.jpg" alt="Laser scanning"><span class="tag">3D Capture</span></div>
+        <div class="card-media"><img src="assets/laser.webp" alt="Laser scanning" width="1000" height="561" loading="lazy" decoding="async" srcset="assets/laser-500.webp 500w, assets/laser.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="tag">3D Capture</span></div>
         <div class="card-body"><div class="num">05</div><h3>Laser Scanning</h3><p>Terrestrial and mobile scan processing for digital twins, BIM workflows and engineering documentation.</p><ul><li>3D modelling</li><li>BIM / MEP documentation</li><li>Reverse engineering</li><li>Surface texturing</li></ul></div>
       </article>
 
       <article class="card service-card reveal">
-        <div class="card-media"><img src="images/Engineering.jpg" alt="Engineering and CAD"><span class="tag">Engineering</span></div>
+        <div class="card-media"><img src="assets/engineering.webp" alt="Engineering and CAD" width="638" height="356" loading="lazy" decoding="async" srcset="assets/engineering-500.webp 500w, assets/engineering.webp 638w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="tag">Engineering</span></div>
         <div class="card-body"><div class="num">06</div><h3>Engineering & CAD</h3><p>Structured CAD and engineering production support for civil, structural, MEP and architecture teams.</p><ul><li>Engineering drawing conversion</li><li>CAD drafting support</li><li>Raster-to-digital conversion</li><li>Quality-controlled delivery</li></ul></div>
       </article>
     </div>
@@ -672,7 +135,7 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
 <section class="section">
   <div class="container why-grid">
     <div class="why-image reveal">
-      <img src="images/ChatGPT Image Sep 27, 2026, 06_50_03 PM-2.png" alt="Geoinformatics operations">
+      <img src="assets/chatgpt-image-sep-27-2026-06-50-03-pm-2.webp" alt="Geoinformatics operations" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-03-pm-2-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-03-pm-2.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw">
       <div class="floating-card"><strong>200+</strong><span>projects delivered across geospatial, infrastructure and environmental applications.</span></div>
     </div>
     <div class="reveal">
@@ -698,12 +161,12 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
     </div>
 
     <div class="grid-3" style="margin-top:42px">
-      <article class="card reveal"><div class="card-media"><img src="images/Guid Map.png" alt="Land information systems"></div><div class="card-body"><div class="industry-num">01</div><h3>Land Information Systems</h3><p>Cadastral, land-use and municipal GIS solutions for planning institutions and government programs.</p></div></article>
-      <article class="card reveal"><div class="card-media"><img src="images/pylon_2014412b.jpg" alt="Utility mapping"></div><div class="card-body"><div class="industry-num">02</div><h3>Utilities</h3><p>Spatial asset intelligence for electric, gas, water and telecommunications infrastructure.</p></div></article>
-      <article class="card reveal"><div class="card-media"><img src="images/Oil and gas.jpg" alt="Oil and gas"></div><div class="card-body"><div class="industry-num">03</div><h3>Oil & Gas</h3><p>Pipeline corridor mapping, facilities GIS and geospatial integration for energy infrastructure.</p></div></article>
-      <article class="card reveal"><div class="card-media"><img src="images/Mine.jpg" alt="Mining"></div><div class="card-body"><div class="industry-num">04</div><h3>Geology & Mining</h3><p>Terrain mapping, mineral data management, drill-log digitization and mine-site geospatial support.</p></div></article>
-      <article class="card reveal"><div class="card-media"><img src="images/Transport.png" alt="Transportation"></div><div class="card-body"><div class="industry-num">05</div><h3>Transportation</h3><p>Network mapping and navigation-ready geodata for transportation and corridor applications.</p></div></article>
-      <article class="card reveal"><div class="card-media"><img src="images/logging-operation.jpg" alt="Forestry"></div><div class="card-body"><div class="industry-num">06</div><h3>Forestry & Environment</h3><p>LiDAR-based inventory, vegetation analysis, fire mitigation mapping and fallen-log assessment.</p></div></article>
+      <article class="card reveal"><div class="card-media"><img src="assets/guid-map.webp" alt="Land information systems" width="600" height="442" loading="lazy" decoding="async" srcset="assets/guid-map-500.webp 500w, assets/guid-map.webp 600w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div><div class="card-body"><div class="industry-num">01</div><h3>Land Information Systems</h3><p>Cadastral, land-use and municipal GIS solutions for planning institutions and government programs.</p></div></article>
+      <article class="card reveal"><div class="card-media"><img src="assets/pylon-2014412b.webp" alt="Utility mapping" width="620" height="388" loading="lazy" decoding="async" srcset="assets/pylon-2014412b-500.webp 500w, assets/pylon-2014412b.webp 620w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div><div class="card-body"><div class="industry-num">02</div><h3>Utilities</h3><p>Spatial asset intelligence for electric, gas, water and telecommunications infrastructure.</p></div></article>
+      <article class="card reveal"><div class="card-media"><img src="assets/oil-and-gas.webp" alt="Oil and gas" width="796" height="537" loading="lazy" decoding="async" srcset="assets/oil-and-gas-500.webp 500w, assets/oil-and-gas.webp 796w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div><div class="card-body"><div class="industry-num">03</div><h3>Oil & Gas</h3><p>Pipeline corridor mapping, facilities GIS and geospatial integration for energy infrastructure.</p></div></article>
+      <article class="card reveal"><div class="card-media"><img src="assets/mine.webp" alt="Mining" width="1000" height="377" loading="lazy" decoding="async" srcset="assets/mine-500.webp 500w, assets/mine.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div><div class="card-body"><div class="industry-num">04</div><h3>Geology & Mining</h3><p>Terrain mapping, mineral data management, drill-log digitization and mine-site geospatial support.</p></div></article>
+      <article class="card reveal"><div class="card-media"><img src="assets/transport.webp" alt="Transportation" width="1000" height="667" loading="lazy" decoding="async" srcset="assets/transport-500.webp 500w, assets/transport.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div><div class="card-body"><div class="industry-num">05</div><h3>Transportation</h3><p>Network mapping and navigation-ready geodata for transportation and corridor applications.</p></div></article>
+      <article class="card reveal"><div class="card-media"><img src="assets/logging-operation.webp" alt="Forestry" width="1000" height="665" loading="lazy" decoding="async" srcset="assets/logging-operation-500.webp 500w, assets/logging-operation.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div><div class="card-body"><div class="industry-num">06</div><h3>Forestry & Environment</h3><p>LiDAR-based inventory, vegetation analysis, fire mitigation mapping and fallen-log assessment.</p></div></article>
     </div>
   </div>
 </section>
@@ -716,20 +179,22 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
         <h2 class="section-title">Project experience</h2>
         <p class="section-copy">A selection of LiDAR, infrastructure, mining, environmental and photogrammetry projects.</p>
       </div>
-      <div class="filters">
-        <button class="filter-btn active" onclick="filterProjects('all',this)">All</button>
-        <button class="filter-btn" onclick="filterProjects('lidar',this)">LiDAR</button>
-        <button class="filter-btn" onclick="filterProjects('mining',this)">Mining</button>
-        <button class="filter-btn" onclick="filterProjects('urban',this)">Urban</button>
-        <button class="filter-btn" onclick="filterProjects('environment',this)">Environment</button>
-        <button class="filter-btn" onclick="filterProjects('photogrammetry',this)">Photogrammetry</button>
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button type="button" aria-pressed="true" class="filter-btn active" onclick="filterProjects('all',this)">All</button>
+        <button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('lidar',this)">LiDAR</button>
+        <button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('mining',this)">Mining</button>
+        <button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('urban',this)">Urban</button>
+        <button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('environment',this)">Environment</button>
+        <button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('photogrammetry',this)">Photogrammetry</button>
+<button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('cad',this)">3D / CAD</button>
+<button type="button" aria-pressed="false" class="filter-btn" onclick="filterProjects('powerline',this)">Powerline</button>
       </div>
     </div>
 
     
 <div class="grid-3" id="projectGrid">
-  <article class="card project-card reveal" data-cat="lidar urban">
-    <div class="card-media"><img src="images/Civil Agriculture Design.png" alt="Civil Agriculture Design"><span class="area-badge">640 SqKm</span></div>
+  <article class="card project-card reveal" data-project data-cat="lidar urban">
+    <div class="card-media"><img src="assets/civil-agriculture-design.webp" alt="Civil Agriculture Design" width="1000" height="667" loading="lazy" decoding="async" srcset="assets/civil-agriculture-design-500.webp 500w, assets/civil-agriculture-design.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">640 SqKm</span></div>
     <div class="card-body">
       <div class="project-type">Civil Agriculture</div>
       <h3>Civil Agriculture Design</h3>
@@ -737,8 +202,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>Ground</span><span>Hydro</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="lidar environment">
-    <div class="card-media"><img src="images/Flinders River — Flood Management.png" alt="Flinders River flood management"><span class="area-badge">1,400 SqKm</span></div>
+  <article class="card project-card reveal" data-project data-cat="lidar environment">
+    <div class="card-media"><img src="assets/flinders-river-flood-management.webp" alt="Flinders River flood management" width="1000" height="667" loading="lazy" decoding="async" srcset="assets/flinders-river-flood-management-500.webp 500w, assets/flinders-river-flood-management.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">1,400 SqKm</span></div>
     <div class="card-body">
       <div class="project-type">Flood Management</div>
       <h3>Flinders River</h3>
@@ -746,8 +211,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>Buildings</span><span>Flood Modelling</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="lidar urban">
-    <div class="card-media"><img src="images/Sunshine Coast.png" alt="Sunshine Coast LiDAR"><span class="area-badge">600 SqKm</span></div>
+  <article class="card project-card reveal" data-project data-cat="lidar urban">
+    <div class="card-media"><img src="assets/sunshine-coast.webp" alt="Sunshine Coast LiDAR" width="1000" height="667" loading="lazy" decoding="async" srcset="assets/sunshine-coast-500.webp 500w, assets/sunshine-coast.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">600 SqKm</span></div>
     <div class="card-body">
       <div class="project-type">Urban LiDAR</div>
       <h3>Sunshine Coast</h3>
@@ -755,8 +220,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>3D Breaklines</span><span>DTM/DSM</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="lidar urban">
-    <div class="card-media"><img src="images/Powerline classification.png" alt="Powerline danger detection"><span class="area-badge">495 Km</span></div>
+  <article class="card project-card reveal" data-project data-cat="lidar powerline">
+    <div class="card-media"><img src="assets/powerline-classification.webp" alt="Powerline danger detection" width="1000" height="644" loading="lazy" decoding="async" srcset="assets/powerline-classification-500.webp 500w, assets/powerline-classification.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">495 Km</span></div>
     <div class="card-body">
       <div class="project-type">Powerline</div>
       <h3>CNC Transmission</h3>
@@ -764,8 +229,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>Powerline</span><span>Safety</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="lidar urban">
-    <div class="card-media"><img src="images/PowerLine_03.jpg" alt="Victoria DTV"><span class="area-badge">2,240 SqKm</span></div>
+  <article class="card project-card reveal" data-project data-cat="lidar urban">
+    <div class="card-media"><img src="assets/powerline-03.webp" alt="Victoria DTV" width="1000" height="532" loading="lazy" decoding="async" srcset="assets/powerline-03-500.webp 500w, assets/powerline-03.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">2,240 SqKm</span></div>
     <div class="card-body">
       <div class="project-type">State-wide LiDAR</div>
       <h3>Victoria DTV</h3>
@@ -773,8 +238,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>Ground</span><span>Buildings</span><span>Artifacts</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="mining">
-    <div class="card-media"><img src="images/Mine.jpg" alt="Super Pit mapping"><span class="area-badge">128 SqKm</span></div>
+  <article class="card project-card reveal" data-project data-cat="mining">
+    <div class="card-media"><img src="assets/mine.webp" alt="Super Pit mapping" width="1000" height="377" loading="lazy" decoding="async" srcset="assets/mine-500.webp 500w, assets/mine.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">128 SqKm</span></div>
     <div class="card-body">
       <div class="project-type">Mining</div>
       <h3>Super Pit</h3>
@@ -782,8 +247,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>Mine Mapping</span><span>Ground</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="environment lidar">
-    <div class="card-media"><img src="images/logging-operation.jpg" alt="Forest fire analysis"><span class="area-badge">200 Acres</span></div>
+  <article class="card project-card reveal" data-project data-cat="environment lidar">
+    <div class="card-media"><img src="assets/logging-operation.webp" alt="Forest fire analysis" width="1000" height="665" loading="lazy" decoding="async" srcset="assets/logging-operation-500.webp 500w, assets/logging-operation.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">200 Acres</span></div>
     <div class="card-body">
       <div class="project-type">Forest Analysis</div>
       <h3>Forest Fire Analysis</h3>
@@ -791,8 +256,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>Vegetation</span><span>Log Measurement</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="photogrammetry">
-    <div class="card-media"><img src="images/Canal Alagoano — Ortho Mosaic & DTM.png" alt="Canal Alagoano"><span class="area-badge">52 SqKm</span></div>
+  <article class="card project-card reveal" data-project data-cat="photogrammetry">
+    <div class="card-media"><img src="assets/canal-alagoano-ortho-mosaic-dtm.webp" alt="Canal Alagoano" width="1000" height="667" loading="lazy" decoding="async" srcset="assets/canal-alagoano-ortho-mosaic-dtm-500.webp 500w, assets/canal-alagoano-ortho-mosaic-dtm.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">52 SqKm</span></div>
     <div class="card-body">
       <div class="project-type">Drone / UAV</div>
       <h3>Canal Alagoano</h3>
@@ -800,102 +265,99 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
       <div class="mini-list"><span>13,000 Images</span><span>UAV</span><span>DTM</span></div></div>
   </article>
 
-  <article class="card project-card reveal" data-cat="urban lidar">
-    <div class="card-media"><img src="images/Lidar classifcation_Ashland.png" alt="City of Ashland"><span class="area-badge">4,300 Acres</span></div>
+  <article class="card project-card reveal" data-project data-cat="urban lidar">
+    <div class="card-media"><img src="assets/lidar-classifcation-ashland.webp" alt="City of Ashland" width="1000" height="386" loading="lazy" decoding="async" srcset="assets/lidar-classifcation-ashland-500.webp 500w, assets/lidar-classifcation-ashland.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"><span class="area-badge">4,300 Acres</span></div>
     <div class="card-body">
       <div class="project-type">Urban UAV</div>
       <h3>City of Ashland</h3>
       <p>High-density UAV LiDAR classification for ground, vegetation, buildings and utilities.</p>
       <div class="mini-list"><span>600 ppm</span><span>UAV LiDAR</span></div></div>
   </article>
-</div>
- 
-<div class="more-projects-grid">
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_01 PM-1.png" alt="Engineering drawing - woods project"></div>
+
+    <article class="mini-project" data-project data-cat="lidar">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-01-pm-1.webp" alt="Engineering drawing - woods project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-01-pm-1-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-01-pm-1.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>Engineering drawing - woods project</h4>
       <p>LiDAR classification project delivered for terrain interpretation and production-ready geospatial outputs.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/Kindwood.png" alt="Kindwood project"></div>
+    <article class="mini-project" data-project data-cat="cad">
+      <div class="mini-project-media"><img src="assets/kindwood.webp" alt="Kindwood project" width="1000" height="563" loading="lazy" decoding="async" srcset="assets/kindwood-500.webp 500w, assets/kindwood.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">3D</span></div>
       <h4>Kindwood</h4>
       <p>3D topo drawing work supporting detailed spatial drafting and engineering-ready mapping deliverables.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/Paisely Rd.png" alt="Paisely Rd project"></div>
+    <article class="mini-project" data-project data-cat="cad">
+      <div class="mini-project-media"><img src="assets/paisely-rd.webp" alt="Paisely Rd project" width="1000" height="563" loading="lazy" decoding="async" srcset="assets/paisely-rd-500.webp 500w, assets/paisely-rd.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">3D</span></div>
       <h4>Paisely Rd</h4>
       <p>Road-related topographic drafting support for a compact corridor-focused project environment.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/Pender to cordova.png" alt="Pender to cordova project"></div>
+    <article class="mini-project" data-project data-cat="cad">
+      <div class="mini-project-media"><img src="assets/pender-to-cordova.webp" alt="Pender to cordova project" width="1000" height="667" loading="lazy" decoding="async" srcset="assets/pender-to-cordova-500.webp 500w, assets/pender-to-cordova.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">3D</span></div>
       <h4>Pender to cordova</h4>
       <p>Detailed mapping and drafting support for a linear urban infrastructure segment.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_05 PM-4.png" alt="Koika project"></div>
+    <article class="mini-project" data-project data-cat="lidar">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-05-pm-4.webp" alt="Koika project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-05-pm-4-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-05-pm-4.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>Koika</h4>
       <p>LiDAR classification package produced for terrain and land-cover interpretation workflows.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_08 PM-5.png" alt="BCI Abandoned Mines project"></div>
+    <article class="mini-project" data-project data-cat="lidar mining">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-08-pm-5.webp" alt="BCI Abandoned Mines project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-08-pm-5-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-08-pm-5.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>BCI Abandoned Mines UAS LiDAR Classification</h4>
       <p>UAS LiDAR classification support for mining-related terrain modelling and site analysis.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_10 PM-6.png" alt="UAV LiDAR survey processing project"></div>
+    <article class="mini-project" data-project data-cat="lidar">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-10-pm-6.webp" alt="UAV LiDAR survey processing project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-10-pm-6-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-10-pm-6.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>UAV LiDAR Survey Processing</h4>
       <p>UAV LiDAR processing workflow aligned to survey-grade classification and deliverable requirements.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_12 PM-7.png" alt="Engineering drawing - Two small parcels project"></div>
+    <article class="mini-project" data-project data-cat="lidar">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-12-pm-7.webp" alt="Engineering drawing - Two small parcels project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-12-pm-7-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-12-pm-7.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>LiDAR Classification - Two Small Parcels</h4>
       <p>Compact parcel classification project completed for smaller-area LiDAR production needs.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/Kandes LiDAR classification and mapping.png" alt="Kandes mapping project"></div>
+    <article class="mini-project" data-project data-cat="lidar">
+      <div class="mini-project-media"><img src="assets/kandes-lidar-classification-and-mapping.webp" alt="Kandes mapping project" width="1000" height="563" loading="lazy" decoding="async" srcset="assets/kandes-lidar-classification-and-mapping-500.webp 500w, assets/kandes-lidar-classification-and-mapping.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR + Mapping</span></div>
       <h4>Kandes LiDAR classification and mapping</h4>
       <p>Combined classification and mapping package for a moderate-size geospatial dataset.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_14 PM-8.png" alt="Kawaihae powerline project"></div>
+    <article class="mini-project" data-project data-cat="lidar powerline">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-14-pm-8.webp" alt="Kawaihae powerline project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-14-pm-8-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-14-pm-8.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">Powerline</span></div>
       <h4>Kawaihae</h4>
       <p>Powerline corridor project with focused processing for utility-aligned linear infrastructure mapping.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/Upper highway.png" alt="Upper highway project"></div>
+    <article class="mini-project" data-project data-cat="lidar powerline">
+      <div class="mini-project-media"><img src="assets/upper-highway.webp" alt="Upper highway project" width="1000" height="563" loading="lazy" decoding="async" srcset="assets/upper-highway-500.webp 500w, assets/upper-highway.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">Powerline</span></div>
       <h4>Upper highway</h4>
       <p>Extended corridor processing for route-level utility and transportation analysis requirements.</p>
     </article>
 
-    <article class="mini-project">
-      <div class="mini-project-media"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_15 PM-9.png" alt="Mining wall dataset project"></div>
+    <article class="mini-project" data-project data-cat="lidar mining">
+      <div class="mini-project-media"><img src="assets/chatgpt-image-sep-27-2026-06-50-15-pm-9.webp" alt="Mining wall dataset project" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-15-pm-9-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-15-pm-9.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
       <div class="topline"><span class="ptype">LiDAR</span></div>
       <h4>Mining wall dataset - Pix4D</h4>
       <p>Specialized dataset preparation supporting mining wall interpretation and Pix4D-based workflows.</p>
     </article>
   </div>
-</div>
 </div>
 </section>
 
@@ -904,23 +366,24 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
 
 <section class="video-section">
   <div class="video-wrap reveal">
-    <video id="showcase-video" poster="images/Cover.jpg" preload="metadata" muted playsinline onclick="toggleVideo(this)">
+    <video id="showcase-video" poster="assets/cover.webp" preload="none" muted playsinline controls aria-label="Geoinformatics project showcase">
       <source src="https://geoinformatics.z13.web.core.windows.net/geoinformatics/Videos/lidar.mp4" type="video/mp4">
     </video>
-    <div class="video-overlay" id="play-overlay" onclick="toggleVideo(document.getElementById('showcase-video'))">
-      <div class="play">
+    <button type="button" class="video-overlay" id="play-overlay" aria-label="Play project showcase" onclick="toggleVideo(document.getElementById('showcase-video'))">
+      <span class="play">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-      <h3>See our geospatial workflow in action</h3>
-      <p>Play project showcase</p>
-    </div>
-    <button id="mute-btn" onclick="toggleMute()">🔇 Unmute</button>
+      </span>
+      <span class="video-title">See our geospatial workflow in action</span>
+      <span class="video-caption">Play project showcase</span>
+    </button>
+    <p id="video-status" class="video-status" role="status"></p>
+    <button type="button" aria-pressed="true" id="mute-btn" onclick="toggleMute()">🔇 Unmute</button>
   </div>
 </section>
 
 <section class="section" id="about">
   <div class="container about-grid">
-    <div class="about-photo reveal"><img src="images/ChatGPT Image Sep 27, 2026, 06_50_03 PM-2.png" alt="Geoinformatics team and operations"></div>
+    <div class="about-photo reveal"><img src="assets/chatgpt-image-sep-27-2026-06-50-03-pm-2.webp" alt="Geoinformatics team and operations" width="1000" height="750" loading="lazy" decoding="async" srcset="assets/chatgpt-image-sep-27-2026-06-50-03-pm-2-500.webp 500w, assets/chatgpt-image-sep-27-2026-06-50-03-pm-2.webp 1000w" sizes="(max-width: 640px) calc(100vw - 28px), (max-width: 980px) 46vw, 32vw"></div>
     <div class="about-copy reveal">
       <div class="eyebrow">About us</div>
       <h2 class="section-title">A specialist partner for spatial data production.</h2>
@@ -945,29 +408,29 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
         <h2 class="section-title">Have a geospatial project in mind?</h2>
         <p class="section-copy" style="color:var(--muted)">Tell us about the data, project area, required deliverables and schedule. Our team can review the requirement and respond with the most appropriate workflow.</p>
         <div class="contact-details">
-          <div class="contact-detail"><small style="color:var(--forest-2)">Email</small><span style="color:var(--ink)">info@geoinformatics.co.in</span></div>
+          <div class="contact-detail"><small style="color:var(--forest-2)">Email</small><a href="mailto:info@geoinformatics.co.in">info@geoinformatics.co.in</a></div>
           <div class="contact-detail"><small style="color:var(--forest-2)">Office</small><span style="color:var(--ink)">10, East Coast Road, VGP Layout, Palavakkam, Chennai, Tamil Nadu 600041, India</span></div>
           <div class="contact-detail"><small style="color:var(--forest-2)">Business hours</small><span style="color:var(--ink)">Monday – Saturday · 9:00 am – 6:00 pm</span></div>
         </div>
       </div>
-      <div class="form-card">
+      <form class="form-card" id="enquiry-form" action="/api/enquiry" method="post">
         <div class="form-grid">
-          <div class="field"><label>First name</label><input type="text" placeholder="First name"></div>
-          <div class="field"><label>Last name</label><input type="text" placeholder="Last name"></div>
+          <div class="field"><label for="firstName">First name *</label><input id="firstName" name="firstName" autocomplete="given-name" required maxlength="80"></div>
+          <div class="field"><label for="lastName">Last name</label><input id="lastName" name="lastName" autocomplete="family-name" maxlength="80"></div>
         </div>
-        <div class="field"><label>Email address</label><input type="email" placeholder="you@company.com"></div>
-        <div class="field"><label>Phone number</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
-        <div class="field"><label>Service of interest</label>
-          <select>
-            <option>Select a service...</option>
-            <option>LiDAR Processing</option><option>Photogrammetry</option><option>GIS Services</option>
-            <option>Orthophoto Production</option><option>Laser Scanning</option><option>Engineering & CAD</option>
-            <option>Other / General Enquiry</option>
-          </select>
-        </div>
-        <div class="field"><label>Project details</label><textarea placeholder="Tell us about the project area, data type, deliverables and expected timeline..."></textarea></div>
-        <button class="submit" onclick="this.textContent='Thank you — message ready to send';">Send Project Enquiry</button>
-      </div>
+        <div class="field"><label for="email">Email address *</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@company.com"></div>
+        <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" placeholder="Include country code"></div>
+        <div class="field"><label for="service">Service of interest *</label><select id="service" name="service" required>
+          <option value="">Select a service…</option><option>LiDAR Processing</option><option>Photogrammetry</option><option>GIS Services</option><option>Orthophoto Production</option><option>Laser Scanning</option><option>Engineering &amp; CAD</option><option>Other / General Enquiry</option>
+        </select></div>
+        <div class="field"><label for="message">Project details *</label><textarea id="message" name="message" required minlength="20" maxlength="4000" rows="5" placeholder="Project area, data type, deliverables and expected timeline…"></textarea></div>
+        <div class="honeypot" aria-hidden="true"><label for="website">Leave this field blank</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <p class="form-note">We use these details to respond to your enquiry. Please do not include confidential project data.</p>
+        <button class="submit" type="submit">Send Project Enquiry</button>
+        <p id="form-status" role="status" aria-live="polite"></p>
+        <a id="email-fallback" href="mailto:info@geoinformatics.co.in">Prefer email? Contact info@geoinformatics.co.in</a>
+        <noscript><p>Please use the email link above to contact us.</p></noscript>
+      </form>
     </div>
   </div>
 </section>
@@ -992,83 +455,8 @@ footer{background:#103424;color:#fff;padding:64px 0 30px}
   </div>
 </footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>24));
-
-const menuBtn=document.getElementById('menuBtn');
-const navLinks=document.getElementById('navLinks');
-menuBtn.addEventListener('click',()=>navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
-
-const revealObserver=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}})
-},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
-
-const countObserver=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(!entry.isIntersecting)return;
-    const el=entry.target,target=+el.dataset.target,duration=1400,start=performance.now();
-    function tick(now){
-      const p=Math.min((now-start)/duration,1);
-      el.textContent=Math.floor(target*(1-Math.pow(1-p,3)));
-      if(p<1)requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);countObserver.unobserve(el);
-  })
-},{threshold:.6});
-document.querySelectorAll('.count').forEach(el=>countObserver.observe(el));
-
-function filterProjects(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.project-card').forEach(card=>{
-    card.style.display=(cat==='all'||card.dataset.cat.includes(cat))?'block':'none';
-  });
-}
-
-function toggleVideo(video){
-  const overlay=document.getElementById('play-overlay');
-  const mute=document.getElementById('mute-btn');
-  if(video.paused){video.play();overlay.style.display='none';mute.style.display='block'}
-  else{video.pause();overlay.style.display='flex';mute.style.display='none'}
-}
-function toggleMute(){
-  const video=document.getElementById('showcase-video'),btn=document.getElementById('mute-btn');
-  video.muted=!video.muted;btn.textContent=video.muted?'🔇 Unmute':'🔊 Mute';
-}
-
-const map=L.map('client-map',{center:[20,15],zoom:2,zoomControl:true,scrollWheelZoom:false,attributionControl:false,worldCopyJump:false});
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:10,minZoom:2,noWrap:true}).addTo(map);
-
-function makeIcon(isHQ){
-  return L.divIcon({
-    className:'',
-    html:`<div style="width:${isHQ?16:12}px;height:${isHQ?16:12}px;background:${isHQ?'#b9efc9':'#ffffff'};border-radius:50%;border:2px solid #155b3a;box-shadow:0 0 0 5px rgba(185,239,201,.22)"></div>`,
-    iconSize:[16,16],iconAnchor:[8,8],popupAnchor:[0,-10]
-  });
-}
-const clients=[
-  [-26.65,153.06,'Sunshine Coast','Australia','LiDAR Classification · 600 SqKm'],
-  [-33.87,151.21,'Sydney','Australia','Western Sydney Corridor · 64 SqKm'],
-  [-31.95,115.86,'Perth','Australia','City of Karratha & Newman Sites'],
-  [44.05,-123.09,'Oregon','USA','Calistoga Fire Mitigation · 100 Acres'],
-  [41.85,-87.65,'Chicago','USA','Forest Fire Analysis · 200 Acres'],
-  [49.25,-123.10,'Vancouver','Canada','High Density LiDAR'],
-  [50.85,4.35,'Belgium','Europe','European Geospatial Project'],
-  [-15.78,-47.93,'Brazil','South America','Canal Alagoano · 13,000 UAV Images'],
-  [13.08,80.27,'Chennai','India','Geoinformatics HQ · All Services'],
-  [51.51,-0.13,'London','UK','UK Geospatial Services'],
-  [43.30,5.38,'Marseille','France','European Mapping Project']
-];
-clients.forEach(c=>{
-  const hq=c[2]==='Chennai';
-  L.marker([c[0],c[1]],{icon:makeIcon(hq)}).addTo(map)
-   .bindPopup(`<strong>${c[2]}${hq?' · HQ':''}</strong><span>${c[3]}</span><span>${c[4]}</span>`);
-});
-map.fitBounds(clients.map(c=>[c[0],c[1]]),{padding:[38,38],maxZoom:4});
-</script>
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="assets/world-map.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://website-tau-sand-78.vercel.app/sitemap.xml
