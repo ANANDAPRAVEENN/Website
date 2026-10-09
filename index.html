@@ -16,9 +16,6 @@
 <meta name="theme-color" content="#155b3a">
 <link rel="preload" as="image" href="assets/cover.webp" fetchpriority="high">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css"/>
 
 <link rel="stylesheet" href="assets/site.css">
@@ -449,14 +446,26 @@
       </div>
       <div class="footer-col"><h4>Services</h4><a href="#services">LiDAR Processing</a><a href="#services">Photogrammetry</a><a href="#services">GIS Services</a><a href="#services">Laser Scanning</a></div>
       <div class="footer-col"><h4>Industries</h4><a href="#industries">Utilities</a><a href="#industries">Mining</a><a href="#industries">Transportation</a><a href="#industries">Forestry</a></div>
-      <div class="footer-col"><h4>Company</h4><a href="#about">About</a><a href="#projects">Projects</a><a href="#contact">Contact</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="#about">About</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="privacy.html">Privacy &amp; Cookies</a></div>
     </div>
-    <div class="footer-bottom"><p>© 2026 Geoinformatics Pvt Ltd. All rights reserved.</p><p>Chennai · India</p></div>
+    <div class="footer-bottom"><p>© 2026 Geoinformatics Pvt Ltd. All rights reserved.</p><div><p>Chennai · India</p><button type="button" class="cookie-settings-link" id="cookie-settings">Cookie settings</button></div></div>
   </div>
 </footer>
 
 <script src="assets/vendor/leaflet/leaflet.js"></script>
 <script src="assets/world-map.js"></script>
 <script src="assets/site.js"></script>
+<section class="cookie-banner" id="cookie-banner" role="region" aria-labelledby="cookie-title" hidden>
+  <div class="cookie-copy">
+    <h2 id="cookie-title">Cookie &amp; cache notice</h2>
+    <p>We use essential browser storage to remember your choice. With your permission, we also load Google Fonts and Esri satellite map imagery. Rejecting optional content keeps the map on its built-in map view. Your browser may cache site files to help pages load; cache is separate from cookies.</p>
+    <a href="privacy.html">Privacy and cookie details</a>
+    <p class="cookie-status" id="cookie-status" role="status" aria-live="polite"></p>
+  </div>
+  <div class="cookie-actions">
+    <button type="button" class="cookie-button cookie-accept" id="cookie-accept">Accept</button>
+    <button type="button" class="cookie-button cookie-reject" id="cookie-reject">Reject</button>
+  </div>
+</section>
 </body>
 </html>

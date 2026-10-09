@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Geoinformatics privacy, cookie and browser cache notice.">
+  <meta name="theme-color" content="#155b3a">
+  <title>Privacy, Cookies &amp; Browser Cache | Geoinformatics</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    body{font-family:Arial,sans-serif;color:#10231a;background:#f6f8f5;line-height:1.65}
+    main{width:min(820px,calc(100% - 36px));margin:64px auto;padding:36px;background:white;border:1px solid #dce5df;border-radius:20px}
+    h1,h2{font-family:Georgia,serif;line-height:1.2}h1{font-size:clamp(2rem,6vw,3rem);margin:0 0 12px}h2{font-size:1.45rem;margin:28px 0 8px}
+    p,li{font-size:15px;color:#405248}a{color:#155b3a}button{min-height:44px;padding:10px 18px;border-radius:999px;border:1px solid #155b3a;background:#155b3a;color:white;cursor:pointer}
+  </style>
+</head>
+<body>
+<main>
+  <a href="index.html">← Back to Geoinformatics</a>
+  <h1>Privacy, cookies &amp; browser cache</h1>
+  <p>This notice explains the browser storage and optional external content used on the Geoinformatics website.</p>
+
+  <h2>Cookies and essential browser storage</h2>
+  <p>The website stores your cookie choice in your browser's local storage under <code>geoinformatics-cookie-choice-v1</code>. This remembers whether you accepted or rejected optional content. The preference is stored on your device and is not an analytics cookie. The website does not use advertising or analytics cookies.</p>
+
+  <h2>Optional third-party content</h2>
+  <p>If you select <strong>Accept</strong>, the website loads fonts from Google Fonts and satellite map tiles from Esri. Those providers may receive technical data such as your IP address and browser request when your browser connects to them; their own privacy terms apply. If you select <strong>Reject</strong>, these optional requests are not made: locally bundled fonts and the built-in map remain available.</p>
+  <p>Playing the project showcase video connects to the configured video host after you press play. LinkedIn opens only if you choose its link.</p>
+
+  <h2>Browser cache</h2>
+  <p>Your browser may keep copies of website files, such as images, stylesheets and scripts, in its cache to make later page loads faster. The browser manages this cache. It is separate from cookies and the saved preference above. Clearing the browser cache may cause assets to download again; clearing site data may also reset your saved choice.</p>
+
+  <h2>Enquiries</h2>
+  <p>If you submit the project enquiry form, the information you provide is sent to Geoinformatics through the email delivery service configured for the website so the team can respond. Do not submit confidential project data through this form. You may also contact <a href="mailto:info@geoinformatics.co.in">info@geoinformatics.co.in</a>.</p>
+
+  <h2>Your choice</h2>
+  <p>You can change your choice at any time using “Cookie settings” in the website footer. Rejecting optional content does not block access to the website or its locally bundled project map.</p>
+  <p><button type="button" id="privacy-settings">Cookie settings</button></p>
+</main>
+<script>
+const KEY='geoinformatics-cookie-choice-v1';
+document.getElementById('privacy-settings').addEventListener('click',()=>{try{localStorage.removeItem(KEY);}catch{} location.href='index.html#cookie-settings';});
+</script>
+</body>
+</html>

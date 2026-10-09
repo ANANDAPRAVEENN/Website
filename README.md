@@ -20,7 +20,9 @@ Official references: https://vercel.com/docs/functions/runtimes/node-js and http
 
 ## SEO and publishing
 
-Canonical, Open Graph, robots and sitemap URLs use the repository's recorded Vercel URL. If the preferred live domain changes, update all four together. The old HTML version is retained for compatibility but omitted from the sitemap. Deploy the HTML, assets, sitemap, robots, and API together; replacing only the HTML would omit its dependencies. No production deployment has been performed as part of this review.
+Canonical, Open Graph, robots and sitemap URLs use the repository's recorded Vercel URL. If the preferred live domain changes, update all four together. The old HTML version is retained for compatibility but omitted from the sitemap. Deploy the HTML, assets, sitemap, robots, privacy notice, and API together; replacing only the HTML would omit its dependencies. No production deployment has been performed as part of this review.
+
+The standardized cookie and cache notice offers **Accept** and **Reject**. Accept enables Google Fonts and Esri satellite map tiles; reject keeps system fonts and the bundled Natural Earth map. The choice is saved in browser local storage, and the footer provides Cookie settings to change it. The privacy notice distinguishes site storage and browser cache, lists the optional providers, enquiry data flow and how to revisit the choice. No analytics or advertising cookies are present. A browser cache is managed by the visitor's browser and is separate from this consent choice.
 
 ## Improvements
 

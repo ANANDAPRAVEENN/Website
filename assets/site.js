@@ -1,4 +1,25 @@
 'use strict';
+const CONSENT_KEY = 'geoinformatics-cookie-choice-v1';
+function readConsent() {
+  try {const value=localStorage.getItem(CONSENT_KEY);return value==='accepted'||value==='rejected'?value:null;}
+  catch {return null;}
+}
+let cookieChoice=readConsent();
+const cookieBanner=document.getElementById('cookie-banner');
+const cookieStatus=document.getElementById('cookie-status');
+const consentSettings=document.getElementById('cookie-settings');
+function showCookieBanner() {cookieBanner.hidden=false;}
+function saveCookieChoice(choice) {
+  cookieChoice=choice;
+  try {localStorage.setItem(CONSENT_KEY,choice);cookieStatus.textContent='Your choice has been saved. You can change it in Cookie settings.';cookieBanner.hidden=true;}
+  catch {cookieStatus.textContent='Your browser could not remember this choice. It applies for this visit only.';cookieBanner.hidden=false;}
+  if(choice==='accepted') window.enableOptionalSiteContent?.();
+  else window.disableOptionalSiteContent?.();
+}
+document.getElementById('cookie-accept').addEventListener('click',()=>saveCookieChoice('accepted'));
+document.getElementById('cookie-reject').addEventListener('click',()=>saveCookieChoice('rejected'));
+consentSettings.addEventListener('click',()=>{cookieStatus.textContent='';showCookieBanner();document.getElementById('cookie-accept').focus();});
+if(!cookieChoice||location.hash==='#cookie-settings') showCookieBanner();
 const nav = document.getElementById('nav');
 const updateNav = () => nav.classList.toggle('scrolled', window.scrollY > 24);
 window.addEventListener('scroll', updateNav, {passive:true});
@@ -89,7 +110,20 @@ if(typeof L !== 'undefined') {
     L.geoJSON(worldLand,{pane:'land',interactive:false,style:{color:'#83a99a',weight:.5,fillColor:'#325a47',fillOpacity:1},attribution:'Natural Earth'}).addTo(map);
     if(fallbackMap) fallbackMap.hidden=true;
   }
-  const tiles=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:10,minZoom:0,noWrap:true,attribution:'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'}).addTo(map);
+  const tiles=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:10,minZoom:0,noWrap:true,attribution:'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'});
+  window.enableOptionalSiteContent=()=>{
+    if(!map.hasLayer(tiles)) tiles.addTo(map);
+    if(!document.getElementById('optional-google-fonts')) {
+      const fonts=document.createElement('link');fonts.id='optional-google-fonts';fonts.rel='stylesheet';
+      fonts.href='https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap';
+      document.head.append(fonts);
+    }
+  };
+  window.disableOptionalSiteContent=()=>{
+    if(map.hasLayer(tiles)) map.removeLayer(tiles);
+    document.getElementById('optional-google-fonts')?.remove();
+  };
+  if(cookieChoice==='accepted') window.enableOptionalSiteContent();
 
   function makeIcon(isHQ) {
     return L.divIcon({className:'',html:`<div style="width:${isHQ?16:12}px;height:${isHQ?16:12}px;background:${isHQ?'#b9efc9':'#ffffff'};border-radius:50%;border:2px solid #155b3a;box-shadow:0 0 0 5px rgba(185,239,201,.22)"></div>`,iconSize:[16,16],iconAnchor:[8,8],popupAnchor:[0,-10]});
